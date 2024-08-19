@@ -34,6 +34,9 @@ public class Controller {
                 case W -> {model.moveUp();}
                 case D -> {model.moveLeft();}
                 case S -> {model.moveDown();}
+                case SPACE -> {iModel.shoot(mouseX,mouseY,
+                        model.playerXPos()*model.canvasWidth
+                        ,model.playerYPos()*model.canvasHeight);}
             }
         }
 
@@ -42,7 +45,15 @@ public class Controller {
     public void handleMouseMoved(MouseEvent mouseEvent) {
         double mY = mouseEvent.getY();
         double mX = mouseEvent.getX();
+        mouseX = mX;
+        mouseY = mY;
 
         model.changePlayerAngle(mX,mY);
+    }
+
+    public void handleMouseReleased(MouseEvent mouseEvent) {
+//        case SPACE -> {iModel.shoot(mouseX,mouseY,
+//                model.playerXPos()*model.canvasWidth
+//                ,model.playerYPos()*model.canvasHeight);}
     }
 }

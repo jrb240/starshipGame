@@ -6,6 +6,7 @@ package com.example.starship;
  */
 
 public class DemoAsteroid {
+    public double radius;
     double positionX,positionY,dX,dY;
     double speed;
     enum Size{BIG,MED,SMALL}
@@ -33,7 +34,7 @@ public class DemoAsteroid {
 
         //we have placed the asteroid and now we need a direction for it to
         //move in. We have a move speed of at least 1 set.
-        speed = Math.random()*10;
+        speed = Math.random()*5;
         if (speed < 1){
             speed = 1;
         }
@@ -50,9 +51,26 @@ public class DemoAsteroid {
 
     }
     //update asteroid position
-    public void move(){
-        positionX = positionX + dX;
-        positionY = positionY + dY;
+    public void move(double width, double height){
+        positionX = (positionX*width + dX)/width;
+        positionY = (positionY*height + dY)/height;
+        //TODO: better method of checking this
+        //moving left
+        if (positionX < -0.002){
+            positionX = 1.001;
+        }
+        //moving right
+        if (positionX > 1.002){
+            positionX = -0.001;
+        }
+        //moving up
+        if (positionY < -0.002){
+            positionY = 1.001;
+        }
+        //moving down
+        if (positionY > 1.002){
+            positionY = -0.001;
+        }
     }
     public double getPositionY() {
         return positionY;
@@ -63,5 +81,19 @@ public class DemoAsteroid {
 
     public Size getAsteroidSize() {
         return asteroidSize;
+    }
+    public double getRadius(){
+        switch (this.asteroidSize){
+            case BIG -> {
+                return 55.0;
+            }
+            case MED -> {
+                return 24.5;
+            }
+            case SMALL -> {
+                return 10.6;
+            }
+        }
+        return 55.0;
     }
 }

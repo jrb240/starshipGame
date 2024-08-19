@@ -26,6 +26,7 @@ public class SpaceView extends StackPane implements Subscriber {
     public void setControlller(Controller controller) {
         myCanvas.setOnKeyPressed(controller::handleKeyPressed);
         myCanvas.setOnMouseMoved(controller::handleMouseMoved);
+        myCanvas.setOnMouseReleased(controller::handleMouseReleased);
     }
 
     public void setModel(PlayerModel model) {
@@ -62,16 +63,34 @@ public class SpaceView extends StackPane implements Subscriber {
     private void draw() {
         playerPrinter.clearRect(0,0,myCanvas.getWidth(), myCanvas.getHeight());
 //        model.getPlayer().getAngle();
+        playerPrinter.setFill(Color.color(.2,.2,.2));
+        playerPrinter.setLineWidth(1);
+        playerPrinter.setStroke(Color.GREY);
+        iModel.getAsteroids().forEach(asteroid->{
+            playerPrinter.fillOval(myCanvas.getWidth()* asteroid.getPositionX()-asteroid.getRadius(),
+                    myCanvas.getHeight()*asteroid.getPositionY()-asteroid.getRadius(),
+                    asteroid.getRadius()*2,
+                    asteroid.getRadius()*2);
+            playerPrinter.strokeOval(myCanvas.getWidth()* asteroid.getPositionX()-asteroid.getRadius(),
+                    myCanvas.getHeight()*asteroid.getPositionY()-asteroid.getRadius(),
+                    asteroid.getRadius()*2,
+                    asteroid.getRadius()*2);
+        });
+        playerPrinter.setFill(Color.color(1,1,0));
+        playerPrinter.setLineWidth(0.5);
+        playerPrinter.setStroke(Color.ORANGE);
+        iModel.getBullets().forEach(bullet->{
+            playerPrinter.fillOval(bullet.positionX-2,bullet.positionY-2,4,4);
+            playerPrinter.strokeOval(bullet.positionX-2,bullet.positionY-2,4,4);
+        });
         playerPrinter.save();
         playerPrinter.translate(model.getPlayer().getPosX()*myCanvas.getWidth(),
                 model.getPlayer().getPosY()*myCanvas.getHeight());
+        playerPrinter.scale(.5,.5);  //shrinking
         playerPrinter.rotate(model.getPlayer().getAngle());
         playerPrinter.drawImage(model.getShip(),-91,-60.5);
+
         playerPrinter.restore();
-//        playerPrinter.drawImage(model.getShip(),
-//                model.playerXPos()*myCanvas.getWidth()-91,
-//                model.playerYPos()*myCanvas.getHeight()-60.5);
-        iModel.getAsteroids();
     }
 
     public void setFocus() {

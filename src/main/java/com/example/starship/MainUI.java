@@ -24,7 +24,7 @@ public class MainUI extends StackPane {
         workingCanvas = new HBox();
 
         PlayerModel model = new PlayerModel(width,height);
-        InteractionModel iModel = new InteractionModel();
+        InteractionModel iModel = new InteractionModel(width,height);
         controller = new Controller();
         view = new SpaceView(width,height);
         SpaceView miniMap = new SpaceView(mmWidth,mmHeight);
@@ -36,6 +36,7 @@ public class MainUI extends StackPane {
         controller.setModel(model);
         controller.setiModel(iModel);
         model.addSubscriber(view);
+        iModel.addSubscriber(view);
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
