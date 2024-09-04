@@ -7,7 +7,10 @@ import java.io.IOException;
 
 public class Player {
     private double posX,posY,angle;
-
+    private double xSpeed;
+    private double ySpeed;
+    private double increment = 0.001;
+    private double timer;
     private BufferedImage ship;
     private Image testShip;
 
@@ -16,13 +19,16 @@ public class Player {
         posY = 0.5;
         angle = 0;
 
+        xSpeed = 0;
+        ySpeed = 0;
+        timer = 0;
+
         ship = null;
         testShip = new Image("ship_cut.png");
 //        getShipImage();
     }
 
     public void getShipImage(){
-        
         try {
             ship = ImageIO.read(getClass().getResourceAsStream("ship_cut.png"));
         } catch (IOException e) {
@@ -53,5 +59,39 @@ public class Player {
 
     public void setAngle(double newAngle) {
         this.angle = newAngle;
+    }
+
+    public void increaseSpeed(double xRatio,double yRatio) {
+        xSpeed =xSpeed+ increment*xRatio;
+        ySpeed =ySpeed+ increment*yRatio;
+        timer = 100;
+    }
+    public void decreaseSpeed(){
+        xSpeed = xSpeed * 0.95;
+        ySpeed = ySpeed * 0.95;
+    }
+
+    public void update() {
+        posX =posX+xSpeed;
+        posY =posY+ySpeed;
+        if (posX < -0.002){
+            posX = 1.001;
+        }
+        //moving right
+        if (posX > 1.002){
+            posX = -0.001;
+        }
+        //moving up
+        if (posY < -0.002){
+            posY = 1.001;
+        }
+        //moving down
+        if (posY > 1.002){
+            posY = -0.001;
+        }
+        timer = timer - 1;
+        if (timer < 0){
+            decreaseSpeed();
+        }
     }
 }

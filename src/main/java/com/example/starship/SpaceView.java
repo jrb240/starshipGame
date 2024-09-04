@@ -13,6 +13,7 @@ public class SpaceView extends StackPane implements Subscriber {
     PlayerModel model;
     InteractionModel iModel;
     Controller controller;
+    double shipScaler = 0.25;
     public SpaceView(double CanvasWidth,double CanvasHeight){
         starCanvas = new Canvas(CanvasWidth,CanvasHeight);
         myCanvas = new Canvas(CanvasWidth,CanvasHeight);
@@ -61,8 +62,10 @@ public class SpaceView extends StackPane implements Subscriber {
     }
 
     private void draw() {
+        //clean view
         playerPrinter.clearRect(0,0,myCanvas.getWidth(), myCanvas.getHeight());
 //        model.getPlayer().getAngle();
+        //draw asteroids
         playerPrinter.setFill(Color.color(.2,.2,.2));
         playerPrinter.setLineWidth(1);
         playerPrinter.setStroke(Color.GREY);
@@ -76,6 +79,7 @@ public class SpaceView extends StackPane implements Subscriber {
                     asteroid.getRadius()*2,
                     asteroid.getRadius()*2);
         });
+        //draw bullets
         playerPrinter.setFill(Color.color(1,1,0));
         playerPrinter.setLineWidth(0.5);
         playerPrinter.setStroke(Color.ORANGE);
@@ -83,10 +87,11 @@ public class SpaceView extends StackPane implements Subscriber {
             playerPrinter.fillOval(bullet.positionX-2,bullet.positionY-2,4,4);
             playerPrinter.strokeOval(bullet.positionX-2,bullet.positionY-2,4,4);
         });
+        //draw ship
         playerPrinter.save();
         playerPrinter.translate(model.getPlayer().getPosX()*myCanvas.getWidth(),
                 model.getPlayer().getPosY()*myCanvas.getHeight());
-        playerPrinter.scale(.5,.5);  //shrinking
+        playerPrinter.scale(shipScaler,shipScaler);  //shrinking
         playerPrinter.rotate(model.getPlayer().getAngle());
         playerPrinter.drawImage(model.getShip(),-91,-60.5);
 

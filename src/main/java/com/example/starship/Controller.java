@@ -30,10 +30,15 @@ public class Controller {
             }
         } else {
             switch (keyEvent.getCode()){
-                case A -> {model.moveRight();}
-                case W -> {model.moveUp();}
-                case D -> {model.moveLeft();}
-                case S -> {model.moveDown();}
+                case W ->{
+                    model.increaseSpeed(mouseX,mouseY,
+                            model.playerXPos()*model.canvasWidth
+                            ,model.playerYPos()*model.canvasHeight);
+                }
+//                case A -> {model.moveRight();}
+//                case W -> {model.moveUp();}
+//                case D -> {model.moveLeft();}
+//                case S -> {model.moveDown();}
                 case SPACE -> {iModel.shoot(mouseX,mouseY,
                         model.playerXPos()*model.canvasWidth
                         ,model.playerYPos()*model.canvasHeight);}

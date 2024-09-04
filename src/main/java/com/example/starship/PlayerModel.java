@@ -91,9 +91,23 @@ public class PlayerModel {
         double pX = player.getPosX();
         double pY = player.getPosY();
 
-
-        if (scaledY-pY < 0 && scaledX-pX > 0 || scaledY-pY > 0 && scaledX-pX > 0){
-            player.setAngle(Math.toDegrees(Math.atan((scaledY-pY)/(scaledX-pX)))+181);
+        //cases where the inverse tan is going to mess up
+        if (scaledY-pY == 0) {
+            if (scaledX-pX > 0){
+                player.setAngle(180);
+            } else {
+                player.setAngle(0);
+            }
+        } else if (scaledX-pX == 0) {
+            if (scaledY-pY > 0){
+                player.setAngle(270);
+            }
+            else {
+                player.setAngle(90);
+            }
+        }
+        else if (scaledY-pY < 0 && scaledX-pX > 0 || scaledY-pY > 0 && scaledX-pX > 0){
+            player.setAngle(Math.toDegrees(Math.atan((scaledY-pY)/(scaledX-pX)))+180);
         } else {
             player.setAngle(Math.toDegrees(Math.atan((scaledY-pY)/(scaledX-pX))));
         }
@@ -104,5 +118,13 @@ public class PlayerModel {
     }
 
     public void update() {
+        player.update();
+    }
+    public void increaseSpeed(double mouseX, double mouseY, double playerX, double playerY) {
+        double hypotenuse = Math.sqrt((mouseX-playerX)*(mouseX-playerX)
+                +(mouseY-playerY)*(mouseY-playerY));
+        double xRatio = (mouseX-playerX)/hypotenuse;
+        double yRatio = (mouseY-playerY)/hypotenuse;
+        player.increaseSpeed(xRatio,yRatio);
     }
 }

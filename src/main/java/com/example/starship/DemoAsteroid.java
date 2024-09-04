@@ -1,5 +1,10 @@
 package com.example.starship;
 
+import javafx.scene.image.PixelReader;
+import javafx.scene.image.WritableImage;
+
+import java.awt.*;
+
 /***
  * We are generating some circles to act as asteroids with random spawns
  * and movement speeds
@@ -11,6 +16,9 @@ public class DemoAsteroid {
     double speed;
     enum Size{BIG,MED,SMALL}
     Size asteroidSize;
+    private WritableImage buffer;
+    private PixelReader reader;
+    private Canvas offScreenCanvas;
     public DemoAsteroid(){
 
         double slot = Math.random();

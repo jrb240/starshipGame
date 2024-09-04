@@ -9,6 +9,7 @@ public class InteractionModel {
     ArrayList<EnergyBullet> cleanBullets;
     ArrayList<Subscriber> subscribers;
     double canvasWidth,canvasHeight;
+    double bulletSpawn = 23;
     InteractionModel(double width, double height){
         asteroidSet = new ArrayList<>();
         bullets = new ArrayList<>();
@@ -32,11 +33,20 @@ public class InteractionModel {
 
         bullets.forEach(bullet->{
             if (bullet.isTimedOut()){
-                bullets.remove(bullet);
+                popBullet.getAndAdd(1);
+//                bullets.remove(bullet);
             } else {
                 bullet.move();
             }
         });
+        if (popBullet.get()>0){
+            bullets.remove(0);
+            popBullet.set(0);
+        }
+        if (!bullets.isEmpty() && !asteroidSet.isEmpty()){
+            asteroidSet.forEach(asteroid->{
+            });
+        }
 
         notifySubscribers();
     }
@@ -63,8 +73,8 @@ public class InteractionModel {
         double xRatio = (mouseX-playerX)/hypotenuse;
         double yRatio = (mouseY-playerY)/hypotenuse;
 
-        double startX = 46*xRatio + playerX;
-        double startY = 46* yRatio + playerY;
+        double startX = bulletSpawn* xRatio + playerX;
+        double startY = bulletSpawn* yRatio + playerY;
 
         bullets.add(new EnergyBullet(startX,startY,xRatio,yRatio,5));
     }

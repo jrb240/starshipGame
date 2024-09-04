@@ -14,13 +14,14 @@ public class Asteroid {
     double[] homeXs, homeYs;
     double tx, ty, rVel, xVel, yVel;
     double angleRadians;
-    Canvas offscreen;
-    GraphicsContext offscreenGC;
-    WritableImage buffer;
-    PixelReader reader;
+    private Canvas offscreen;
+    private GraphicsContext offscreenGC;
+    private WritableImage buffer;
+    private PixelReader reader;
     double vWidth, vHeight;
     private double maxVel;
     int z;
+
 
     public Asteroid(double w, double h, int newZ) {
         vWidth = w;
