@@ -48,7 +48,59 @@ public class InteractionModel {
             });
         }
 
+        //Terrible design but we need something
+        collider();
+
         notifySubscribers();
+    }
+
+    private void collider() {
+        if (!bullets.isEmpty() && !asteroidSet.isEmpty()) {
+            int bulletStep = 0;
+            for (int i = 0; i < bullets.size(); i++) {
+                int asteroidStep = 0;
+                for (int j = 0; j < asteroidSet.size(); j++) {
+                    //test if bullet hit asteroid
+                    if (distance(bullets.get(bulletStep).positionX, bullets.get(bulletStep).positionY,
+                            asteroidSet.get(asteroidStep).positionX * canvasWidth, asteroidSet.get(asteroidStep).positionY * canvasHeight, asteroidSet.get(asteroidStep).getRadius())) {
+                        //is the asteroid destroyed
+                        if (asteroidSet.get(asteroidStep).isDestroyed()) {
+                            asteroidSet.remove(asteroidStep);
+                            bullets.remove(bulletStep);
+                            if (asteroidSet.isEmpty() || bullets.isEmpty() || bulletStep <= bullets.size()){
+                                break;
+                            }
+                            //not destroyed just downsize
+                        } else {
+                            asteroidSet.get(asteroidStep).sizeDown();
+                            bullets.remove(bulletStep);
+                            asteroidStep++;
+                            if (bullets.isEmpty() || bulletStep <= bullets.size()){
+                                break;
+                            }
+                        }
+                    } else {
+                        asteroidStep++;
+                    }
+                }
+                bulletStep++;
+                if (bullets.isEmpty()){
+                    break;
+                } else if (bullets.size() <= bulletStep) {
+                    break;
+                }
+            }
+        }
+
+//        if (!bullets.isEmpty()){
+//            bullets.forEach(bullet->{
+//                asteroidSet.forEach(demoAsteroid -> {
+//                    if (distance(bullet.positionX,bullet.positionY,demoAsteroid.positionX*canvasWidth,demoAsteroid.positionY*canvasHeight,demoAsteroid.getRadius())){
+//                        demoAsteroid.sizeDown();
+//                    }
+//                });
+//            });
+//        }
     }
 
     public void restart() {
@@ -77,5 +129,11 @@ public class InteractionModel {
         double startY = bulletSpawn* yRatio + playerY;
 
         bullets.add(new EnergyBullet(startX,startY,xRatio,yRatio,5));
+    }
+    public boolean distance(double bX, double bY, double aX, double aY, double aRadius){
+        return pythagoras(bX, bY, aX, aY) < aRadius;
+    }
+    public double pythagoras(double bX, double bY, double aX, double aY){
+        return Math.sqrt((bX-aX)*(bX-aX)+(bY-aY)*(bY-aY));
     }
 }

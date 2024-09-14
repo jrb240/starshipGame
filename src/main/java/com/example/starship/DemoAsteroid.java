@@ -14,6 +14,7 @@ public class DemoAsteroid {
     public double radius;
     double positionX,positionY,dX,dY;
     double speed;
+
     enum Size{BIG,MED,SMALL}
     Size asteroidSize;
     private WritableImage buffer;
@@ -103,5 +104,19 @@ public class DemoAsteroid {
             }
         }
         return 55.0;
+    }
+    public void sizeDown() {
+        switch (asteroidSize){
+            case BIG -> asteroidSize = Size.MED;
+            case MED -> asteroidSize = Size.SMALL;
+            case SMALL -> asteroidSize = Size.BIG;
+        }
+    }
+    public boolean isDestroyed() {
+        if (asteroidSize==Size.SMALL){
+            return true;
+        }else {
+            return false;
+        }
     }
 }

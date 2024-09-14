@@ -2,12 +2,16 @@ package com.example.starship;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.PixelReader;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
 public class SpaceView extends StackPane implements Subscriber {
 
-    Canvas myCanvas,starCanvas;
+    Canvas myCanvas,starCanvas,collider;
+    WritableImage buffer;
+    PixelReader reader;
     GraphicsContext gc;
     GraphicsContext printer, playerPrinter;
     PlayerModel model;

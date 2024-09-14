@@ -67,8 +67,8 @@ public class Player {
         timer = 100;
     }
     public void decreaseSpeed(){
-        xSpeed = xSpeed * 0.95;
-        ySpeed = ySpeed * 0.95;
+        xSpeed = xSpeed * 0.7;
+        ySpeed = ySpeed * 0.7;
     }
 
     public void update() {
@@ -92,6 +92,7 @@ public class Player {
         timer = timer - 1;
         if (timer < 0){
             decreaseSpeed();
+            timer = 20;
         }
     }
 }
