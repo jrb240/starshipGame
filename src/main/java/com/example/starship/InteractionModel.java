@@ -19,8 +19,28 @@ public class InteractionModel {
     }
     public void start(){
         System.out.println("Started game");
+        double positionY;
+        double positionX;
         for(int x=1;x<=3;x++){
-            asteroidSet.add(new DemoAsteroid());
+            double slot = Math.random();
+        if ( slot < 0.25){
+            //place asteroid on the top
+           positionY = 0.1;
+           positionX = Math.random();
+        } else if (slot < 0.5 ) {
+            //place asteroid on the bottom
+            positionY = 0.9;
+            positionX = Math.random();
+        } else if (slot < 0.75) {
+            //place asteroid on the left
+            positionY = Math.random();
+            positionX = 0.1;
+        } else {
+            //place asteroid on the right
+            positionY = Math.random();
+            positionX = 0.9;
+        }
+            asteroidSet.add(new DemoAsteroid(positionX,positionY));
         }
         subscribers.forEach(Subscriber::modelChanged);
     }
