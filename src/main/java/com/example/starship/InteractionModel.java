@@ -92,6 +92,7 @@ public class InteractionModel {
                             }
                             //not destroyed just downsize
                         } else {
+                            asteroidSet.add(new LesserAsteroid(asteroidSet.get(asteroidStep).getPositionX(),asteroidSet.get(asteroidStep).getPositionY(),asteroidSet.get(asteroidStep)));
                             asteroidSet.get(asteroidStep).sizeDown();
                             bullets.remove(bulletStep);
                             asteroidStep++;

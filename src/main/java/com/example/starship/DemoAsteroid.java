@@ -109,8 +109,14 @@ public class DemoAsteroid {
     }
     public void sizeDown() {
         switch (asteroidSize){
-            case BIG -> asteroidSize = Size.MED;
-            case MED -> asteroidSize = Size.SMALL;
+            case BIG -> {
+                asteroidSize = Size.MED;
+                this.changeDirection();
+            }
+            case MED -> {
+                asteroidSize = Size.SMALL;
+                this.changeDirection();
+            }
             case SMALL -> asteroidSize = Size.BIG;
         }
     }
@@ -137,6 +143,10 @@ public class DemoAsteroid {
         //now see if they are negative change values
         if (yDir < 0.5){dY = -dY;}
         if (xDir < 0.5){dX = -dX;}
-        asteroidSize = Size.BIG;
+//        asteroidSize = Size.BIG;
+    }
+
+    public void setAsteroidSize(Size asteroidSize) {
+        this.asteroidSize = asteroidSize;
     }
 }
