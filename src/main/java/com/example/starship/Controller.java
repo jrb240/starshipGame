@@ -9,7 +9,7 @@ public class Controller {
     PlayerModel model;
     double mouseX,mouseY;
     public void handleTimerTick() {
-        model.update();
+        model.update(iModel.getAsteroids());
         iModel.update();
     }
     Controller(){};

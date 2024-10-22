@@ -13,6 +13,7 @@ public class Player {
     private double timer;
     private BufferedImage ship;
     private Image testShip;
+    private double scaler;
 
     public Player(){
         posX = 0.5;
@@ -24,8 +25,10 @@ public class Player {
         timer = 0;
 
         ship = null;
+        //182x121
         testShip = new Image("ship_cut.png");
 //        getShipImage();
+        scaler = 0.25;
     }
 
     public void getShipImage(){
@@ -94,5 +97,9 @@ public class Player {
             decreaseSpeed();
             timer = 20;
         }
+    }
+
+    public double getScaler() {
+        return scaler;
     }
 }

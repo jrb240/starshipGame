@@ -1,6 +1,6 @@
 module com.example.starship {
     requires javafx.controls;
-    requires javafx.fxml;
+//    requires javafx.fxml;
     requires java.desktop;
 
 

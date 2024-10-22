@@ -117,7 +117,8 @@ public class PlayerModel {
         subscribers.forEach(Subscriber::modelChanged);
     }
 
-    public void update() {
+    public void update(ArrayList<DemoAsteroid> asteroids) {
+
         player.update();
     }
     public void increaseSpeed(double mouseX, double mouseY, double playerX, double playerY) {
@@ -126,5 +127,8 @@ public class PlayerModel {
         double xRatio = (mouseX-playerX)/hypotenuse;
         double yRatio = (mouseY-playerY)/hypotenuse;
         player.increaseSpeed(xRatio,yRatio);
+    }
+    public double getShipScaler(){
+        return player.getScaler();
     }
 }
