@@ -112,16 +112,6 @@ public class InteractionModel {
                 }
             }
         }
-
-//        if (!bullets.isEmpty()){
-//            bullets.forEach(bullet->{
-//                asteroidSet.forEach(demoAsteroid -> {
-//                    if (distance(bullet.positionX,bullet.positionY,demoAsteroid.positionX*canvasWidth,demoAsteroid.positionY*canvasHeight,demoAsteroid.getRadius())){
-//                        demoAsteroid.sizeDown();
-//                    }
-//                });
-//            });
-//        }
     }
 
     public void restart() {
