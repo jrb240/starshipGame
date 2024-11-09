@@ -26,9 +26,10 @@ public class Player {
 
         ship = null;
         //182x121
-        testShip = new Image("ship_cut.png");
+//        testShip = new Image("ship_cut.png");
 //        getShipImage();
-        scaler = 0.25;
+        testShip = shipSelection("ship_cut.png");
+        scaler = 1.5;
     }
 
     public void getShipImage(){
@@ -101,5 +102,11 @@ public class Player {
 
     public double getScaler() {
         return scaler;
+    }
+    public Image shipSelection(String shipName){
+        return new Image("ship_cut.png");
+    }
+    private void collisionPoints(){
+        double front,frontTop,frontBot,frontGunTop,frontGunBot,backGunTop, backGunBot;
     }
 }

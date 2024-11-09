@@ -63,10 +63,11 @@ public class InteractionModel {
             bullets.remove(0);
             popBullet.set(0);
         }
-        if (!bullets.isEmpty() && !asteroidSet.isEmpty()){
-            asteroidSet.forEach(asteroid->{
-            });
-        }
+//        if (!bullets.isEmpty() && !asteroidSet.isEmpty()){
+//            asteroidSet.forEach(asteroid->{
+//                System.out.println("haza");
+//            });
+//        }
 
         //Terrible design but we need something
         collider();

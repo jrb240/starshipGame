@@ -50,10 +50,6 @@ public class SpaceView extends StackPane implements Subscriber {
         playerPrinter.rotate(model.getPlayer().getAngle());
         playerPrinter.drawImage(model.getShip(),-91,-60.5);
         playerPrinter.restore();
-
-//        playerPrinter.drawImage(model.getShip(),
-//                model.playerXPos()*myCanvas.getWidth()-91,
-//                model.playerYPos()*myCanvas.getHeight()-60.5);
     }
 
     public void setIModel(InteractionModel iModel) {
@@ -109,6 +105,7 @@ public class SpaceView extends StackPane implements Subscriber {
         //point 3
         playerPrinter.setFill(Color.LIMEGREEN);
         playerPrinter.fillOval(-84,32,10,10);
+        //Tail fins
         //point 4
         playerPrinter.setFill(Color.LIMEGREEN);
         playerPrinter.fillOval(87,-5,10,10);
@@ -132,7 +129,32 @@ public class SpaceView extends StackPane implements Subscriber {
         //point 10
         playerPrinter.setFill(Color.LIMEGREEN);
         playerPrinter.fillOval(-18,-58,10,10);
-
+        //midships
+        //point 11
+        playerPrinter.setFill(Color.LIMEGREEN);
+        playerPrinter.fillOval(2,38,10,10);
+        //point 12
+        playerPrinter.setFill(Color.LIMEGREEN);
+        playerPrinter.fillOval(2,-48,10,10);
+        //point 13
+        playerPrinter.setFill(Color.LIMEGREEN);
+        playerPrinter.fillOval(22,31,10,10);
+        //point 14
+        playerPrinter.setFill(Color.LIMEGREEN);
+        playerPrinter.fillOval(22,-41,10,10);
+        //Tail
+        //point 15
+        playerPrinter.setFill(Color.LIMEGREEN);
+        playerPrinter.fillOval(42,10,10,10);
+        //point 16
+        playerPrinter.setFill(Color.LIMEGREEN);
+        playerPrinter.fillOval(42,-20,10,10);
+        //point 17
+        playerPrinter.setFill(Color.LIMEGREEN);
+        playerPrinter.fillOval(67,10,10,10);
+        //point 18
+        playerPrinter.setFill(Color.LIMEGREEN);
+        playerPrinter.fillOval(67,-20,10,10);
 
 
         playerPrinter.restore();
