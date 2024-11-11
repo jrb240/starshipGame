@@ -156,6 +156,12 @@ public class SpaceView extends StackPane implements Subscriber {
         playerPrinter.setFill(Color.LIMEGREEN);
         playerPrinter.fillOval(67,-20,10,10);
 
+        model.getPlayer().getHitBox().forEach(hitBox->{
+            playerPrinter.setStroke(Color.AQUA);
+            playerPrinter.setFill(Color.GREY);
+            playerPrinter.fillOval(hitBox.XPos-2,hitBox.YPos-2,4,4);
+            playerPrinter.strokeOval(hitBox.XPos-2,hitBox.YPos-2,4,4);
+        });
 
         playerPrinter.restore();
     }

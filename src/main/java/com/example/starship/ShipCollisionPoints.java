@@ -13,8 +13,9 @@ public class ShipCollisionPoints {
         YRatio = y/diagonal;
     }
 
-    public void update(){
-
+    public void update(double angle){
+        XRatio = XRatio + Math.cos(angle);
+        YRatio = YRatio + Math.sin(angle);
     }
 
     public double getXPos() {

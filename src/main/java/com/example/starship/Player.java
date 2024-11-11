@@ -4,6 +4,7 @@ import javafx.scene.image.Image;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Player {
     private double posX,posY,angle;
@@ -14,6 +15,7 @@ public class Player {
     private BufferedImage ship;
     private Image testShip;
     private double scaler;
+    private ArrayList<ShipCollisionPoints> hitBox;
 
     public Player(){
         posX = 0.5;
@@ -23,6 +25,8 @@ public class Player {
         xSpeed = 0;
         ySpeed = 0;
         timer = 0;
+
+        hitBox = new ArrayList<>();
 
         ship = null;
         //182x121
@@ -63,6 +67,9 @@ public class Player {
 
     public void setAngle(double newAngle) {
         this.angle = newAngle;
+        for (ShipCollisionPoints box : this.hitBox) {
+            box.update(newAngle);
+        }
     }
 
     public void increaseSpeed(double xRatio,double yRatio) {
@@ -103,10 +110,32 @@ public class Player {
     public double getScaler() {
         return scaler;
     }
+    //TODO:Remake this with a ship object as there is too much to keep track of
     public Image shipSelection(String shipName){
+        //front
+        this.hitBox.add(new ShipCollisionPoints(91,0));
+        this.hitBox.add(new ShipCollisionPoints(84,42));
+        this.hitBox.add(new ShipCollisionPoints(84,-42));
+        //Guns
+        this.hitBox.add(new ShipCollisionPoints(54,54));
+        this.hitBox.add(new ShipCollisionPoints(54,-54));
+        this.hitBox.add(new ShipCollisionPoints(18,58));
+        this.hitBox.add(new ShipCollisionPoints(18,-58));
+        //midShips
+        this.hitBox.add(new ShipCollisionPoints(2,48));
+        this.hitBox.add(new ShipCollisionPoints(2,-48));
+        this.hitBox.add(new ShipCollisionPoints(-22,41));
+        this.hitBox.add(new ShipCollisionPoints(-22,-41));
+        //tail
+        this.hitBox.add(new ShipCollisionPoints(-67,20));
+        this.hitBox.add(new ShipCollisionPoints(-67,-20));
+        this.hitBox.add(new ShipCollisionPoints(-87,15));
+        this.hitBox.add(new ShipCollisionPoints(-87,0));
+        this.hitBox.add(new ShipCollisionPoints(-87,-15));
         return new Image("ship_cut.png");
     }
-    private void collisionPoints(){
-        double front,frontTop,frontBot,frontGunTop,frontGunBot,backGunTop, backGunBot;
+
+    public ArrayList<ShipCollisionPoints> getHitBox() {
+        return hitBox;
     }
 }
