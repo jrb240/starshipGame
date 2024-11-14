@@ -9,6 +9,8 @@ public class PlayerModel {
     ArrayList<Subscriber> subscribers;
     Player player;
     double canvasWidth,canvasHeight,playerMoveSpeed;
+    enum PlayerStatus{ALIVE,DEAD};
+    PlayerStatus playerState;
 
     PlayerModel(double width,double height){
         stars = new ArrayList<>();
@@ -17,6 +19,7 @@ public class PlayerModel {
         generateStars(100);
 
         player = new Player();
+         playerState = PlayerStatus.ALIVE;
         setCanvasDimensions(width,height);
     }
 
@@ -118,8 +121,15 @@ public class PlayerModel {
     }
 
     public void update(ArrayList<DemoAsteroid> asteroids) {
-
         player.update();
+        for (DemoAsteroid asteroid : asteroids) {
+            for (ShipCollisionPoints hitBox : player.getHitBox()) {
+                  if (pythagoras(asteroid.getPositionX(),asteroid.getPositionY(),hitBox.getXPos(),hitBox.getYPos())<=asteroid.getRadius()){
+                      playerState = PlayerStatus.DEAD;
+                      System.out.println("You were hit");
+                  }
+            }
+        }
     }
     public void increaseSpeed(double mouseX, double mouseY, double playerX, double playerY) {
         double hypotenuse = Math.sqrt((mouseX-playerX)*(mouseX-playerX)
@@ -130,5 +140,8 @@ public class PlayerModel {
     }
     public double getShipScaler(){
         return player.getScaler();
+    }
+    public double pythagoras(double bX, double bY, double aX, double aY){
+        return Math.sqrt((bX-aX)*(bX-aX)+(bY-aY)*(bY-aY));
     }
 }

@@ -4,18 +4,24 @@ public class ShipCollisionPoints {
     double XPos;
     double YPos;
     double diagonal;
-    double XRatio,YRatio;
-    public ShipCollisionPoints(double x, double y){
+    double XRatio,YRatio,currentXRatio,currentYRatio;
+    public ShipCollisionPoints(double x, double y,double scaler){
         XPos = x;
         YPos = y;
         diagonal = pythagoras(x,y);
         XRatio = x/diagonal;
         YRatio = y/diagonal;
+        currentXRatio = XRatio;
+        currentYRatio = YRatio;
+        diagonal = diagonal*scaler;
     }
 
-    public void update(double angle){
-        XRatio = XRatio + Math.cos(angle);
-        YRatio = YRatio + Math.sin(angle);
+    public void update(double angle,double x, double y){
+        currentXRatio = XRatio + Math.cos(angle);
+        currentYRatio = YRatio + Math.sin(angle);
+
+        XPos = x + currentXRatio*diagonal;
+        YPos = y + currentYRatio*diagonal;
     }
 
     public double getXPos() {
