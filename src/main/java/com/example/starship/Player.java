@@ -29,11 +29,12 @@ public class Player {
         hitBox = new ArrayList<>();
 
         ship = null;
+        scaler = 0.25;
         //182x121
 //        testShip = new Image("ship_cut.png");
 //        getShipImage();
         testShip = shipSelection("ship_cut.png");
-        scaler = .5;
+
     }
 
     public void getShipImage(){
@@ -135,7 +136,7 @@ public class Player {
         this.hitBox.add(new ShipCollisionPoints(87,15,scaler));
         this.hitBox.add(new ShipCollisionPoints(87,0,scaler));
         this.hitBox.add(new ShipCollisionPoints(87,-15,scaler));
-        return new Image("ship_cut.png");
+        return new Image(shipName);
     }
 
     public ArrayList<ShipCollisionPoints> getHitBox() {

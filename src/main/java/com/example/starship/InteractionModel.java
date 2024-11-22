@@ -10,40 +10,49 @@ public class InteractionModel {
     ArrayList<Subscriber> subscribers;
     double canvasWidth,canvasHeight;
     double bulletSpawn = 23;
+    int level,cooldown;
     InteractionModel(double width, double height){
         asteroidSet = new ArrayList<>();
         bullets = new ArrayList<>();
         subscribers = new ArrayList<>();
         canvasWidth = width;
         canvasHeight = height;
+        level = 0;
+        cooldown = 100;
     }
     public void start(){
         System.out.println("Started game");
+        level++;
+        createAstroids();
+    }
+
+    public void createAstroids(){
         double positionY;
         double positionX;
-        for(int x=1;x<=3;x++){
+        for(int x=1;x<=2+level;x++){
             double slot = Math.random();
-        if ( slot < 0.25){
-            //place asteroid on the top
-           positionY = 0.1;
-           positionX = Math.random();
-        } else if (slot < 0.5 ) {
-            //place asteroid on the bottom
-            positionY = 0.9;
-            positionX = Math.random();
-        } else if (slot < 0.75) {
-            //place asteroid on the left
-            positionY = Math.random();
-            positionX = 0.1;
-        } else {
-            //place asteroid on the right
-            positionY = Math.random();
-            positionX = 0.9;
-        }
+            if ( slot < 0.25){
+                //place asteroid on the top
+                positionY = 0.1;
+                positionX = Math.random();
+            } else if (slot < 0.5 ) {
+                //place asteroid on the bottom
+                positionY = 0.9;
+                positionX = Math.random();
+            } else if (slot < 0.75) {
+                //place asteroid on the left
+                positionY = Math.random();
+                positionX = 0.1;
+            } else {
+                //place asteroid on the right
+                positionY = Math.random();
+                positionX = 0.9;
+            }
             asteroidSet.add(new DemoAsteroid(positionX,positionY));
         }
         subscribers.forEach(Subscriber::modelChanged);
     }
+
     public void update() {
         ArrayList<EnergyBullet> cleanBullets = new ArrayList<>();
         asteroidSet.forEach(demoAsteroid->{
@@ -71,7 +80,15 @@ public class InteractionModel {
 
         //Terrible design but we need something
         collider();
-
+        //our asteroid set is empty, and thus we must be done the level
+        if (asteroidSet.isEmpty()&&level!=0){
+            if (cooldown <=0){
+                level++;
+                createAstroids();
+                cooldown = 200;
+            }
+            cooldown--;
+        }
         notifySubscribers();
     }
 
@@ -116,6 +133,9 @@ public class InteractionModel {
     }
 
     public void restart() {
+        asteroidSet.clear();
+        bullets.clear();
+        level = 0;
     }
     public ArrayList<DemoAsteroid> getAsteroids() {
         return asteroidSet;

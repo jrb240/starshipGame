@@ -9,6 +9,21 @@ public class PlayerModel {
     ArrayList<Subscriber> subscribers;
     Player player;
     double canvasWidth,canvasHeight,playerMoveSpeed;
+
+    public void restart() {
+        if (playerState==PlayerStatus.DEAD){
+            playerState = PlayerStatus.ALIVE;
+        }
+    }
+
+    public boolean isPlayerAlive() {
+        if (playerState==PlayerStatus.ALIVE){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     enum PlayerStatus{ALIVE,DEAD};
     PlayerStatus playerState;
 
@@ -114,9 +129,6 @@ public class PlayerModel {
         } else {
             player.setAngle(Math.toDegrees(Math.atan((scaledY-pY)/(scaledX-pX))));
         }
-
-
-
         subscribers.forEach(Subscriber::modelChanged);
     }
 
@@ -124,9 +136,10 @@ public class PlayerModel {
         player.update();
         for (DemoAsteroid asteroid : asteroids) {
             for (ShipCollisionPoints hitBox : player.getHitBox()) {
-                  if (pythagoras(asteroid.getPositionX(),asteroid.getPositionY(),hitBox.getXPos(),hitBox.getYPos())<=asteroid.getRadius()){
+                  if (pythagoras(asteroid.getPositionX()*canvasWidth,asteroid.getPositionY()*canvasHeight,
+                          hitBox.getXPos()+playerXPos()*canvasWidth,hitBox.getYPos()+playerYPos()*canvasHeight
+                  )<=asteroid.getRadius()){
                       playerState = PlayerStatus.DEAD;
-                      System.out.println("You were hit");
                   }
             }
         }
