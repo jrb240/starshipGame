@@ -4,6 +4,7 @@ import javafx.scene.image.Image;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Player {
     private double posX,posY,angle;
@@ -14,6 +15,7 @@ public class Player {
     private BufferedImage ship;
     private Image testShip;
     private double scaler;
+    private ArrayList<ShipCollisionPoints> hitBox;
 
     public Player(){
         posX = 0.5;
@@ -24,11 +26,15 @@ public class Player {
         ySpeed = 0;
         timer = 0;
 
+        hitBox = new ArrayList<>();
+
         ship = null;
-        //182x121
-        testShip = new Image("ship_cut.png");
-//        getShipImage();
         scaler = 0.25;
+        //182x121
+//        testShip = new Image("ship_cut.png");
+//        getShipImage();
+        testShip = shipSelection("ship_cut.png");
+
     }
 
     public void getShipImage(){
@@ -62,6 +68,9 @@ public class Player {
 
     public void setAngle(double newAngle) {
         this.angle = newAngle;
+        for (ShipCollisionPoints box : this.hitBox) {
+            box.update(newAngle,this.posX,this.posY);
+        }
     }
 
     public void increaseSpeed(double xRatio,double yRatio) {
@@ -77,6 +86,9 @@ public class Player {
     public void update() {
         posX =posX+xSpeed;
         posY =posY+ySpeed;
+//        for (ShipCollisionPoints box : this.hitBox) {
+//            box.update(getAngle(),getPosX(),getPosY());
+//        }
         if (posX < -0.002){
             posX = 1.001;
         }
@@ -101,5 +113,33 @@ public class Player {
 
     public double getScaler() {
         return scaler;
+    }
+    //TODO:Remake this with a ship object as there is too much to keep track of
+    public Image shipSelection(String shipName){
+        //front
+        this.hitBox.add(new ShipCollisionPoints(-91,0,scaler));
+        this.hitBox.add(new ShipCollisionPoints(-84,42,scaler));
+        this.hitBox.add(new ShipCollisionPoints(-84,-42,scaler));
+        //Guns
+        this.hitBox.add(new ShipCollisionPoints(-54,54,scaler));
+        this.hitBox.add(new ShipCollisionPoints(-54,-54,scaler));
+        this.hitBox.add(new ShipCollisionPoints(-18,58,scaler));
+        this.hitBox.add(new ShipCollisionPoints(-18,-58,scaler));
+        //midShips
+        this.hitBox.add(new ShipCollisionPoints(-2,48,scaler));
+        this.hitBox.add(new ShipCollisionPoints(-2,-48,scaler));
+        this.hitBox.add(new ShipCollisionPoints(22,41,scaler));
+        this.hitBox.add(new ShipCollisionPoints(22,-41,scaler));
+        //tail
+        this.hitBox.add(new ShipCollisionPoints(59,20,scaler));
+        this.hitBox.add(new ShipCollisionPoints(59,-20,scaler));
+        this.hitBox.add(new ShipCollisionPoints(87,15,scaler));
+        this.hitBox.add(new ShipCollisionPoints(87,0,scaler));
+        this.hitBox.add(new ShipCollisionPoints(87,-15,scaler));
+        return new Image(shipName);
+    }
+
+    public ArrayList<ShipCollisionPoints> getHitBox() {
+        return hitBox;
     }
 }

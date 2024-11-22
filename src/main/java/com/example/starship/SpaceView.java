@@ -50,10 +50,6 @@ public class SpaceView extends StackPane implements Subscriber {
         playerPrinter.rotate(model.getPlayer().getAngle());
         playerPrinter.drawImage(model.getShip(),-91,-60.5);
         playerPrinter.restore();
-
-//        playerPrinter.drawImage(model.getShip(),
-//                model.playerXPos()*myCanvas.getWidth()-91,
-//                model.playerYPos()*myCanvas.getHeight()-60.5);
     }
 
     public void setIModel(InteractionModel iModel) {
@@ -68,7 +64,7 @@ public class SpaceView extends StackPane implements Subscriber {
     private void draw() {
         //clean view
         playerPrinter.clearRect(0,0,myCanvas.getWidth(), myCanvas.getHeight());
-//        model.getPlayer().getAngle();
+
         //draw asteroids
         playerPrinter.setFill(Color.color(.2,.2,.2));
         playerPrinter.setLineWidth(1);
@@ -83,6 +79,7 @@ public class SpaceView extends StackPane implements Subscriber {
                     asteroid.getRadius()*2,
                     asteroid.getRadius()*2);
         });
+
         //draw bullets
         playerPrinter.setFill(Color.color(1,1,0));
         playerPrinter.setLineWidth(0.5);
@@ -91,51 +88,28 @@ public class SpaceView extends StackPane implements Subscriber {
             playerPrinter.fillOval(bullet.positionX-2,bullet.positionY-2,4,4);
             playerPrinter.strokeOval(bullet.positionX-2,bullet.positionY-2,4,4);
         });
+
         //draw ship
-        playerPrinter.save();
-        playerPrinter.translate(model.getPlayer().getPosX()*myCanvas.getWidth(),
-                model.getPlayer().getPosY()*myCanvas.getHeight());
-        playerPrinter.scale(model.getShipScaler(),model.getShipScaler());  //shrinking
-        playerPrinter.rotate(model.getPlayer().getAngle());
-        playerPrinter.drawImage(model.getShip(),-91,-60.5);
-//        playerPrinter.setFill(Color.WHITE);
-//        playerPrinter.fillOval(-95,-55,175,110);
-        //point 1
-        playerPrinter.setFill(Color.LIMEGREEN);
-        playerPrinter.fillOval(-91,-5,10,10);
-        //point 2
-        playerPrinter.setFill(Color.LIMEGREEN);
-        playerPrinter.fillOval(-84,-42,10,10);
-        //point 3
-        playerPrinter.setFill(Color.LIMEGREEN);
-        playerPrinter.fillOval(-84,32,10,10);
-        //point 4
-        playerPrinter.setFill(Color.LIMEGREEN);
-        playerPrinter.fillOval(87,-5,10,10);
-        //point 5
-        playerPrinter.setFill(Color.LIMEGREEN);
-        playerPrinter.fillOval(87,-20,10,10);
-        //point 6
-        playerPrinter.setFill(Color.LIMEGREEN);
-        playerPrinter.fillOval(87,10,10,10);
-        //frontal guns
-        //point 7
-        playerPrinter.setFill(Color.LIMEGREEN);
-        playerPrinter.fillOval(-54,44,10,10);
-        //point 8
-        playerPrinter.setFill(Color.LIMEGREEN);
-        playerPrinter.fillOval(-54,-54,10,10);
-        //rear guns
-        //point 9
-        playerPrinter.setFill(Color.LIMEGREEN);
-        playerPrinter.fillOval(-18,48,10,10);
-        //point 10
-        playerPrinter.setFill(Color.LIMEGREEN);
-        playerPrinter.fillOval(-18,-58,10,10);
+        if (model.isPlayerAlive()) {
+            playerPrinter.save();
+            playerPrinter.translate(model.getPlayer().getPosX() * myCanvas.getWidth(),
+                    model.getPlayer().getPosY() * myCanvas.getHeight());
+            playerPrinter.scale(model.getShipScaler(), model.getShipScaler());  //shrinking
+            playerPrinter.rotate(model.getPlayer().getAngle());
+            playerPrinter.drawImage(model.getShip(), -91, -60.5);
+            playerPrinter.restore();
+        }
 
+        //draw collision points
+        playerPrinter.setStroke(Color.AQUA);
+        playerPrinter.setFill(Color.RED);
+        model.getPlayer().getHitBox().forEach(hitBox->{
+            playerPrinter.fillOval(hitBox.XPos+model.playerXPos()*myCanvas.getWidth()-2,
+                    hitBox.YPos+ model.playerYPos()*myCanvas.getHeight()-2,4,4);
+            playerPrinter.strokeOval(hitBox.XPos+model.playerXPos()*myCanvas.getWidth()-2,
+                    hitBox.YPos+ model.playerYPos()*myCanvas.getHeight()-2,4,4);
+        });
 
-
-        playerPrinter.restore();
     }
 
     public void setFocus() {

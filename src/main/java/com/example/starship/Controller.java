@@ -26,7 +26,8 @@ public class Controller {
         if(keyEvent.isControlDown()){
             switch (keyEvent.getCode()){
                 case S -> {iModel.start();}
-                case R -> {iModel.restart();}
+                case R -> {iModel.restart();
+                model.restart();}
             }
         } else {
             switch (keyEvent.getCode()){

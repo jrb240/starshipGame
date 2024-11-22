@@ -10,6 +10,23 @@ public class PlayerModel {
     Player player;
     double canvasWidth,canvasHeight,playerMoveSpeed;
 
+    public void restart() {
+        if (playerState==PlayerStatus.DEAD){
+            playerState = PlayerStatus.ALIVE;
+        }
+    }
+
+    public boolean isPlayerAlive() {
+        if (playerState==PlayerStatus.ALIVE){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    enum PlayerStatus{ALIVE,DEAD};
+    PlayerStatus playerState;
+
     PlayerModel(double width,double height){
         stars = new ArrayList<>();
         subscribers = new ArrayList<>();
@@ -17,6 +34,7 @@ public class PlayerModel {
         generateStars(100);
 
         player = new Player();
+         playerState = PlayerStatus.ALIVE;
         setCanvasDimensions(width,height);
     }
 
@@ -111,15 +129,20 @@ public class PlayerModel {
         } else {
             player.setAngle(Math.toDegrees(Math.atan((scaledY-pY)/(scaledX-pX))));
         }
-
-
-
         subscribers.forEach(Subscriber::modelChanged);
     }
 
     public void update(ArrayList<DemoAsteroid> asteroids) {
-
         player.update();
+        for (DemoAsteroid asteroid : asteroids) {
+            for (ShipCollisionPoints hitBox : player.getHitBox()) {
+                  if (pythagoras(asteroid.getPositionX()*canvasWidth,asteroid.getPositionY()*canvasHeight,
+                          hitBox.getXPos()+playerXPos()*canvasWidth,hitBox.getYPos()+playerYPos()*canvasHeight
+                  )<=asteroid.getRadius()){
+                      playerState = PlayerStatus.DEAD;
+                  }
+            }
+        }
     }
     public void increaseSpeed(double mouseX, double mouseY, double playerX, double playerY) {
         double hypotenuse = Math.sqrt((mouseX-playerX)*(mouseX-playerX)
@@ -130,5 +153,8 @@ public class PlayerModel {
     }
     public double getShipScaler(){
         return player.getScaler();
+    }
+    public double pythagoras(double bX, double bY, double aX, double aY){
+        return Math.sqrt((bX-aX)*(bX-aX)+(bY-aY)*(bY-aY));
     }
 }
