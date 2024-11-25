@@ -142,4 +142,10 @@ public class Player {
     public ArrayList<ShipCollisionPoints> getHitBox() {
         return hitBox;
     }
+    public void restart(){
+        posX = 0.5;
+        posY = 0.5;
+        xSpeed = 0;
+        ySpeed = 0;
+    }
 }

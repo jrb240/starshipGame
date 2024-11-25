@@ -6,27 +6,32 @@ import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
 public class SpaceView extends StackPane implements Subscriber {
 
-    Canvas myCanvas,starCanvas,collider;
+    Canvas myCanvas,starCanvas,scoreCanvas, collider;
     WritableImage buffer;
     PixelReader reader;
     GraphicsContext gc;
-    GraphicsContext printer, playerPrinter;
+    GraphicsContext printer, playerPrinter,scorePrinter;
     PlayerModel model;
     InteractionModel iModel;
     Controller controller;
     double shipScaler = 0.25;
+
     public SpaceView(double CanvasWidth,double CanvasHeight){
         starCanvas = new Canvas(CanvasWidth,CanvasHeight);
         myCanvas = new Canvas(CanvasWidth,CanvasHeight);
+        scoreCanvas = new Canvas(CanvasWidth,CanvasHeight);
         printer = starCanvas.getGraphicsContext2D();
         playerPrinter= myCanvas.getGraphicsContext2D();
-
+        scorePrinter = scoreCanvas.getGraphicsContext2D();
+        scorePrinter.setFont(new Font(20));
 
         this.setMaxSize(CanvasWidth,CanvasHeight);
-        this.getChildren().addAll(starCanvas,myCanvas);
+        this.getChildren().addAll(scoreCanvas,starCanvas,myCanvas);
     }
     public void setControlller(Controller controller) {
         myCanvas.setOnKeyPressed(controller::handleKeyPressed);
@@ -64,6 +69,11 @@ public class SpaceView extends StackPane implements Subscriber {
     private void draw() {
         //clean view
         playerPrinter.clearRect(0,0,myCanvas.getWidth(), myCanvas.getHeight());
+
+        //score card
+        scorePrinter.clearRect(0,0,myCanvas.getWidth(), myCanvas.getHeight());
+        scorePrinter.setFill(Color.CYAN);
+        scorePrinter.fillText(iModel.getScore(),5,20);
 
         //draw asteroids
         playerPrinter.setFill(Color.color(.2,.2,.2));

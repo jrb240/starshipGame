@@ -8,22 +8,7 @@ public class PlayerModel {
     ArrayList<Star> stars;
     ArrayList<Subscriber> subscribers;
     Player player;
-    double canvasWidth,canvasHeight,playerMoveSpeed;
-
-    public void restart() {
-        if (playerState==PlayerStatus.DEAD){
-            playerState = PlayerStatus.ALIVE;
-        }
-    }
-
-    public boolean isPlayerAlive() {
-        if (playerState==PlayerStatus.ALIVE){
-            return true;
-        } else {
-            return false;
-        }
-    }
-
+    private double canvasWidth,canvasHeight,playerMoveSpeed;
     enum PlayerStatus{ALIVE,DEAD};
     PlayerStatus playerState;
 
@@ -157,4 +142,35 @@ public class PlayerModel {
     public double pythagoras(double bX, double bY, double aX, double aY){
         return Math.sqrt((bX-aX)*(bX-aX)+(bY-aY)*(bY-aY));
     }
+
+    public void restart() {
+        if (playerState==PlayerStatus.DEAD){
+            playerState = PlayerStatus.ALIVE;
+            player.restart();
+        }
+    }
+
+    public boolean isPlayerAlive() {
+        if (playerState==PlayerStatus.ALIVE){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public double getCanvasHeight() {
+        return canvasHeight;
+    }
+
+    public double getCanvasWidth() {
+        return canvasWidth;
+    }
+
+//    public PlayerStatus getPlayerState() {
+//        return playerState;
+//    }
+//
+//    public double getPlayerMoveSpeed() {
+//        return playerMoveSpeed;
+//    }
 }

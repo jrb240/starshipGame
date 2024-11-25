@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class InteractionModel {
-    ArrayList<DemoAsteroid> asteroidSet;
-    ArrayList<EnergyBullet> bullets;
-    ArrayList<EnergyBullet> cleanBullets;
-    ArrayList<Subscriber> subscribers;
-    double canvasWidth,canvasHeight;
-    double bulletSpawn = 23;
-    int level,cooldown;
+    private ArrayList<DemoAsteroid> asteroidSet;
+    private ArrayList<EnergyBullet> bullets;
+    private ArrayList<EnergyBullet> cleanBullets;
+    private ArrayList<Subscriber> subscribers;
+    private double canvasWidth,canvasHeight;
+    private double bulletSpawn = 23;
+    private int level,cooldown;
+    private long score;
     InteractionModel(double width, double height){
         asteroidSet = new ArrayList<>();
         bullets = new ArrayList<>();
@@ -19,6 +20,7 @@ public class InteractionModel {
         canvasHeight = height;
         level = 0;
         cooldown = 100;
+        score = 0;
     }
     public void start(){
         System.out.println("Started game");
@@ -100,16 +102,23 @@ public class InteractionModel {
                 for (int j = 0; j < asteroidSet.size(); j++) {
                     //test if bullet hit asteroid
                     if (distance(bullets.get(bulletStep).positionX, bullets.get(bulletStep).positionY,
-                            asteroidSet.get(asteroidStep).positionX * canvasWidth, asteroidSet.get(asteroidStep).positionY * canvasHeight, asteroidSet.get(asteroidStep).getRadius())) {
+                            asteroidSet.get(asteroidStep).getPositionX() * canvasWidth, asteroidSet.get(asteroidStep).getPositionY() * canvasHeight, asteroidSet.get(asteroidStep).getRadius())) {
                         //is the asteroid destroyed
                         if (asteroidSet.get(asteroidStep).isDestroyed()) {
                             asteroidSet.remove(asteroidStep);
                             bullets.remove(bulletStep);
+                            score=score+100;
                             if (asteroidSet.isEmpty() || bullets.isEmpty() || bulletStep <= bullets.size()){
                                 break;
                             }
                             //not destroyed just downsize
                         } else {
+                            //Add to score
+                            if (asteroidSet.get(asteroidStep).getAsteroidSize()== DemoAsteroid.Size.BIG){
+                                score = score + 20;
+                            } else {
+                                score = score + 50;
+                            }
                             asteroidSet.add(new LesserAsteroid(asteroidSet.get(asteroidStep).getPositionX(),asteroidSet.get(asteroidStep).getPositionY(),asteroidSet.get(asteroidStep)));
                             asteroidSet.get(asteroidStep).sizeDown();
                             bullets.remove(bulletStep);
@@ -136,6 +145,7 @@ public class InteractionModel {
         asteroidSet.clear();
         bullets.clear();
         level = 0;
+        score = 0;
     }
     public ArrayList<DemoAsteroid> getAsteroids() {
         return asteroidSet;
@@ -167,5 +177,13 @@ public class InteractionModel {
     }
     public double pythagoras(double bX, double bY, double aX, double aY){
         return Math.sqrt((bX-aX)*(bX-aX)+(bY-aY)*(bY-aY));
+    }
+
+    public String getScore() {
+        return String.format("%07d",score);
+    }
+
+    public int getLevel() {
+        return level;
     }
 }

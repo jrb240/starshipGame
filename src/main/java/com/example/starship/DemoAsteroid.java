@@ -12,8 +12,8 @@ import java.awt.*;
 
 public class DemoAsteroid {
     public double radius;
-    double positionX,positionY,dX,dY;
-    double speed;
+    private double positionX,positionY,dX,dY;
+    private double speed;
 
     enum Size{BIG,MED,SMALL}
     Size asteroidSize;
@@ -23,25 +23,6 @@ public class DemoAsteroid {
     public DemoAsteroid(double x,double y){
         positionX = x;
         positionY = y;
-
-//        double slot = Math.random();
-//        if ( slot < 0.25){
-//            //place asteroid on the top
-//           positionY = 0.1;
-//           positionX = Math.random();
-//        } else if (slot < 0.5 ) {
-//            //place asteroid on the bottom
-//            positionY = 0.9;
-//            positionX = Math.random();
-//        } else if (slot < 0.75) {
-//            //place asteroid on the left
-//            positionY = Math.random();
-//            positionX = 0.1;
-//        } else {
-//            //place asteroid on the right
-//            positionY = Math.random();
-//            positionX = 0.9;
-//        }
 
         //we have placed the asteroid and now we need a direction for it to
         //move in. We have a move speed of at least 1 set.
