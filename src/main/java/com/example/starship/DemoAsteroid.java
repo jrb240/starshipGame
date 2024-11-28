@@ -10,16 +10,47 @@ import java.awt.*;
  * and movement speeds
  */
 
-public class DemoAsteroid {
+public class DemoAsteroid implements EnemyObject {
     public double radius;
     private double positionX,positionY,dX,dY;
     private double speed;
-
     enum Size{BIG,MED,SMALL}
     Size asteroidSize;
-    private WritableImage buffer;
-    private PixelReader reader;
-    private Canvas offScreenCanvas;
+
+    @Override
+    public void move(double width, double height) {
+        positionX = (positionX*width + dX)/width;
+        positionY = (positionY*height + dY)/height;
+        //TODO: better method of checking this
+        //moving left
+        if (positionX < -0.002){
+            positionX = 1.001;
+        }
+        //moving right
+        if (positionX > 1.002){
+            positionX = -0.001;
+        }
+        //moving up
+        if (positionY < -0.002){
+            positionY = 1.001;
+        }
+        //moving down
+        if (positionY > 1.002){
+            positionY = -0.001;
+        }
+
+    }
+
+    @Override
+    public double getPositionX() {
+        return positionX;
+    }
+
+    @Override
+    public double getPositionY() {
+        return positionY;
+    }
+
     public DemoAsteroid(double x,double y){
         positionX = x;
         positionY = y;
@@ -43,33 +74,33 @@ public class DemoAsteroid {
 
     }
     //update asteroid position
-    public void move(double width, double height){
-        positionX = (positionX*width + dX)/width;
-        positionY = (positionY*height + dY)/height;
-        //TODO: better method of checking this
-        //moving left
-        if (positionX < -0.002){
-            positionX = 1.001;
-        }
-        //moving right
-        if (positionX > 1.002){
-            positionX = -0.001;
-        }
-        //moving up
-        if (positionY < -0.002){
-            positionY = 1.001;
-        }
-        //moving down
-        if (positionY > 1.002){
-            positionY = -0.001;
-        }
-    }
-    public double getPositionY() {
-        return positionY;
-    }
-    public double getPositionX() {
-        return positionX;
-    }
+//    public void move(double width, double height){
+//        positionX = (positionX*width + dX)/width;
+//        positionY = (positionY*height + dY)/height;
+//        //TODO: better method of checking this
+//        //moving left
+//        if (positionX < -0.002){
+//            positionX = 1.001;
+//        }
+//        //moving right
+//        if (positionX > 1.002){
+//            positionX = -0.001;
+//        }
+//        //moving up
+//        if (positionY < -0.002){
+//            positionY = 1.001;
+//        }
+//        //moving down
+//        if (positionY > 1.002){
+//            positionY = -0.001;
+//        }
+//    }
+//    public double getPositionY() {
+//        return positionY;
+//    }
+//    public double getPositionX() {
+//        return positionX;
+//    }
 
     public Size getAsteroidSize() {
         return asteroidSize;

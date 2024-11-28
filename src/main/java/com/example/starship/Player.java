@@ -14,7 +14,7 @@ public class Player {
     private double timer;
     private BufferedImage ship;
     private Image testShip;
-    private double scaler;
+    private double scaler = 0.25;
     private ArrayList<ShipCollisionPoints> hitBox;
 
     public Player(){
@@ -29,7 +29,7 @@ public class Player {
         hitBox = new ArrayList<>();
 
         ship = null;
-        scaler = 0.25;
+//        scaler = 0.25;
         //182x121
 //        testShip = new Image("ship_cut.png");
 //        getShipImage();
