@@ -1,9 +1,6 @@
 package com.example.starship;
 
-import javafx.scene.image.PixelReader;
-import javafx.scene.image.WritableImage;
-
-import java.awt.*;
+import java.util.ArrayList;
 
 /***
  * We are generating some circles to act as asteroids with random spawns
@@ -16,44 +13,16 @@ public class DemoAsteroid implements EnemyObject {
     private double speed;
     enum Size{BIG,MED,SMALL}
     Size asteroidSize;
-
-    @Override
-    public void move(double width, double height) {
-        positionX = (positionX*width + dX)/width;
-        positionY = (positionY*height + dY)/height;
-        //TODO: better method of checking this
-        //moving left
-        if (positionX < -0.002){
-            positionX = 1.001;
-        }
-        //moving right
-        if (positionX > 1.002){
-            positionX = -0.001;
-        }
-        //moving up
-        if (positionY < -0.002){
-            positionY = 1.001;
-        }
-        //moving down
-        if (positionY > 1.002){
-            positionY = -0.001;
-        }
-
-    }
-
-    @Override
-    public double getPositionX() {
-        return positionX;
-    }
-
-    @Override
-    public double getPositionY() {
-        return positionY;
-    }
+    private boolean faces;
+    //getRadius returns
+    double bigAsteroid = 55.0;
+    double medAsteroid = 24.6;
+    double smallAsteroid = 10.6;
 
     public DemoAsteroid(double x,double y){
         positionX = x;
         positionY = y;
+        faces = false;
 
         //we have placed the asteroid and now we need a direction for it to
         //move in. We have a move speed of at least 1 set.
@@ -73,34 +42,7 @@ public class DemoAsteroid implements EnemyObject {
         asteroidSize = Size.BIG;
 
     }
-    //update asteroid position
-//    public void move(double width, double height){
-//        positionX = (positionX*width + dX)/width;
-//        positionY = (positionY*height + dY)/height;
-//        //TODO: better method of checking this
-//        //moving left
-//        if (positionX < -0.002){
-//            positionX = 1.001;
-//        }
-//        //moving right
-//        if (positionX > 1.002){
-//            positionX = -0.001;
-//        }
-//        //moving up
-//        if (positionY < -0.002){
-//            positionY = 1.001;
-//        }
-//        //moving down
-//        if (positionY > 1.002){
-//            positionY = -0.001;
-//        }
-//    }
-//    public double getPositionY() {
-//        return positionY;
-//    }
-//    public double getPositionX() {
-//        return positionX;
-//    }
+
 
     public Size getAsteroidSize() {
         return asteroidSize;
@@ -108,13 +50,13 @@ public class DemoAsteroid implements EnemyObject {
     public double getRadius(){
         switch (this.asteroidSize){
             case BIG -> {
-                return 55.0;
+                return bigAsteroid;
             }
             case MED -> {
-                return 24.5;
+                return medAsteroid;
             }
             case SMALL -> {
-                return 10.6;
+                return smallAsteroid;
             }
         }
         return 55.0;
@@ -161,4 +103,41 @@ public class DemoAsteroid implements EnemyObject {
     public void setAsteroidSize(Size asteroidSize) {
         this.asteroidSize = asteroidSize;
     }
+    @Override
+    public void move(double width, double height) {
+        positionX = (positionX*width + dX)/width;
+        positionY = (positionY*height + dY)/height;
+        //TODO: better method of checking this
+        //moving left
+        if (positionX < -0.002){
+            positionX = 1.001;
+        }
+        //moving right
+        if (positionX > 1.002){
+            positionX = -0.001;
+        }
+        //moving up
+        if (positionY < -0.002){
+            positionY = 1.001;
+        }
+        //moving down
+        if (positionY > 1.002){
+            positionY = -0.001;
+        }
+
+    }
+
+    @Override
+    public double getPositionX() {
+        return positionX;
+    }
+
+    @Override
+    public double getPositionY() {
+        return positionY;
+    }
+    public void addFaces() {
+        faces = true;
+    }
+    public boolean hasFaces(){return faces;}
 }

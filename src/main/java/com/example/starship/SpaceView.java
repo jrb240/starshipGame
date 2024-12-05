@@ -111,14 +111,14 @@ public class SpaceView extends StackPane implements Subscriber {
         }
 
         //draw collision points
-        playerPrinter.setStroke(Color.AQUA);
-        playerPrinter.setFill(Color.RED);
-        model.getPlayer().getHitBox().forEach(hitBox->{
-            playerPrinter.fillOval(hitBox.XPos+model.playerXPos()*myCanvas.getWidth()-2,
-                    hitBox.YPos+ model.playerYPos()*myCanvas.getHeight()-2,4,4);
-            playerPrinter.strokeOval(hitBox.XPos+model.playerXPos()*myCanvas.getWidth()-2,
-                    hitBox.YPos+ model.playerYPos()*myCanvas.getHeight()-2,4,4);
-        });
+//        playerPrinter.setStroke(Color.AQUA);
+//        playerPrinter.setFill(Color.RED);
+//        model.getPlayer().getHitBox().forEach(hitBox->{
+//            playerPrinter.fillOval(hitBox.XPos+model.playerXPos()*myCanvas.getWidth()-2,
+//                    hitBox.YPos+ model.playerYPos()*myCanvas.getHeight()-2,4,4);
+//            playerPrinter.strokeOval(hitBox.XPos+model.playerXPos()*myCanvas.getWidth()-2,
+//                    hitBox.YPos+ model.playerYPos()*myCanvas.getHeight()-2,4,4);
+//        });
 
     }
 

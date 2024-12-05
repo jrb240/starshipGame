@@ -6,12 +6,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class InteractionModel {
     private ArrayList<DemoAsteroid> asteroidSet;
     private ArrayList<EnergyBullet> bullets;
-    private ArrayList<EnergyBullet> cleanBullets;
     private ArrayList<Subscriber> subscribers;
     private double canvasWidth,canvasHeight;
     private double bulletSpawn = 23;
     private int level,cooldown;
     private long score;
+    private Alien alien;
     InteractionModel(double width, double height){
         asteroidSet = new ArrayList<>();
         bullets = new ArrayList<>();
@@ -19,7 +19,7 @@ public class InteractionModel {
         canvasWidth = width;
         canvasHeight = height;
         level = 0;
-        cooldown = 100;
+        cooldown = 200;
         score = 0;
     }
     public void start(){
@@ -74,11 +74,6 @@ public class InteractionModel {
             bullets.remove(0);
             popBullet.set(0);
         }
-//        if (!bullets.isEmpty() && !asteroidSet.isEmpty()){
-//            asteroidSet.forEach(asteroid->{
-//                System.out.println("haza");
-//            });
-//        }
 
         //Terrible design but we need something
         collider();
@@ -99,6 +94,7 @@ public class InteractionModel {
             int bulletStep = 0;
             for (int i = 0; i < bullets.size(); i++) {
                 int asteroidStep = 0;
+//                if ()
                 for (int j = 0; j < asteroidSet.size(); j++) {
                     //test if bullet hit asteroid
                     if (distance(bullets.get(bulletStep).positionX, bullets.get(bulletStep).positionY,
@@ -139,6 +135,9 @@ public class InteractionModel {
                 }
             }
         }
+    }
+    public void spawnAlien(){
+        alien = new Alien();
     }
 
     public void restart() {
@@ -185,5 +184,8 @@ public class InteractionModel {
 
     public int getLevel() {
         return level;
+    }
+    public boolean isAlienAlive(){
+        return alien.isAlive();
     }
 }
