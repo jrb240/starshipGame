@@ -110,6 +110,15 @@ public class SpaceView extends StackPane implements Subscriber {
             playerPrinter.restore();
         }
 
+        if (iModel.isAlienAlive()){
+            playerPrinter.setFill(Color.CADETBLUE);
+            playerPrinter.setStroke(Color.LIMEGREEN);
+            playerPrinter.fillOval(
+                    myCanvas.getWidth() * iModel.alienX()-25,
+                    myCanvas.getHeight() * iModel.alienY()-10,
+                    50,20);
+        }
+
         //draw collision points
 //        playerPrinter.setStroke(Color.AQUA);
 //        playerPrinter.setFill(Color.RED);

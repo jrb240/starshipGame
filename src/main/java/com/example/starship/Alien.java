@@ -1,15 +1,20 @@
 package com.example.starship;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class Alien implements EnemyObject {
     enum DIRECTION {STRAIGHT,UP,DOWN}
     enum STATE {ALIVE,DEAD}
-    private double movementY = 0.00005;
-    private double movementX = 0.0001;
+    private double movementY = 0.0005;
+    private double movementX = 0.001;
     private double angle;
     private  double cooldown = 400;
     private double x,y;
-    DIRECTION direction = DIRECTION.STRAIGHT;
-    STATE status = STATE.DEAD;
+    private Timer timer;
+    private TimerTask task;
+    private DIRECTION direction = DIRECTION.STRAIGHT;
+    private STATE status = STATE.DEAD;
 
     //be created
     public Alien(){
@@ -21,6 +26,13 @@ public class Alien implements EnemyObject {
             x = -0.001;
         }
         changeDir();
+//        timer = new Timer();
+//        task = new TimerTask() {
+//            @Override
+//            public void run() {
+//                status = STATE.ALIVE;
+//            }
+//        };
     }
     //restart position
     public void respawn(){
@@ -44,6 +56,15 @@ public class Alien implements EnemyObject {
             y = y + movementY;
         } else if (direction == DIRECTION.UP){
             y = y + movementY;
+        }
+        //death by travel
+        if (x > 1.0015 || x < -0.0015){
+            die();
+        }
+        if (y > 1.0015){
+            y = -0.001;
+        } else if (y < -0.0015) {
+            y = 1.001;
         }
     }
 
@@ -71,5 +92,11 @@ public class Alien implements EnemyObject {
     }
     public boolean isAlive() {
         return status == STATE.ALIVE;
+    }
+    public void startTimer(){
+        timer.schedule(task,0,40000);
+    }
+    public void stopTimer(){
+        timer.purge();
     }
 }

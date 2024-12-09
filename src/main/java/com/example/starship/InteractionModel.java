@@ -1,5 +1,6 @@
 package com.example.starship;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -12,6 +13,8 @@ public class InteractionModel {
     private int level,cooldown;
     private long score;
     private Alien alien;
+    private enum GAMESTATE {DEAD,GOING,STANDBY}
+    private GAMESTATE gameState;
     InteractionModel(double width, double height){
         asteroidSet = new ArrayList<>();
         bullets = new ArrayList<>();
@@ -21,10 +24,14 @@ public class InteractionModel {
         level = 0;
         cooldown = 200;
         score = 0;
+        alien = new Alien();
+        gameState = GAMESTATE.STANDBY;
     }
     public void start(){
         System.out.println("Started game");
         level++;
+        gameState = GAMESTATE.GOING;
+        alien.startTimer();
         createAstroids();
     }
 
@@ -60,18 +67,20 @@ public class InteractionModel {
         asteroidSet.forEach(demoAsteroid->{
             demoAsteroid.move(canvasWidth,canvasHeight);
         });
+        //clean up old bullets
         AtomicInteger popBullet = new AtomicInteger();
-
         bullets.forEach(bullet->{
+            //bullets will expire one at a time
+            //TODO:convert bullets to linkedList()
             if (bullet.isTimedOut()){
                 popBullet.getAndAdd(1);
-//                bullets.remove(bullet);
             } else {
                 bullet.move();
             }
         });
+        //bullet has expired, remove it
         if (popBullet.get()>0){
-            bullets.remove(0);
+            bullets.removeFirst();
             popBullet.set(0);
         }
 
@@ -86,6 +95,7 @@ public class InteractionModel {
             }
             cooldown--;
         }
+        rollAlienSpawn();
         notifySubscribers();
     }
 
@@ -136,13 +146,11 @@ public class InteractionModel {
             }
         }
     }
-    public void spawnAlien(){
-        alien = new Alien();
-    }
 
     public void restart() {
         asteroidSet.clear();
         bullets.clear();
+        alien.stopTimer();
         level = 0;
         score = 0;
     }
@@ -185,7 +193,27 @@ public class InteractionModel {
     public int getLevel() {
         return level;
     }
+
+    /***
+     *  Alien stuff
+     */
+
     public boolean isAlienAlive(){
         return alien.isAlive();
     }
+
+    private void rollAlienSpawn(){
+        if (alien.isAlive()){
+            alien.move(canvasWidth,canvasHeight);
+        } else if (Math.random()<0.01) {
+            alien.respawn();
+        }
+    }
+    public double alienX(){
+        return alien.getPositionX();
+    }
+    public double alienY(){
+        return alien.getPositionY();
+    }
+
 }
