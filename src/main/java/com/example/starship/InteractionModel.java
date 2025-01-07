@@ -28,6 +28,7 @@ public class InteractionModel {
         gameState = GAMESTATE.STANDBY;
     }
     public void start(){
+//        alien = new Alien();
         System.out.println("Started game");
         level++;
         gameState = GAMESTATE.GOING;
@@ -150,7 +151,7 @@ public class InteractionModel {
     public void restart() {
         asteroidSet.clear();
         bullets.clear();
-        alien.stopTimer();
+        alien.die();
         level = 0;
         score = 0;
     }
@@ -203,10 +204,12 @@ public class InteractionModel {
     }
 
     private void rollAlienSpawn(){
-        if (alien.isAlive()){
+        if (gameState == GAMESTATE.GOING && alien.isAlive()){
             alien.move(canvasWidth,canvasHeight);
-        } else if (Math.random()<0.01) {
+        } else if (gameState == GAMESTATE.GOING && alien.isAlive() && Math.random()<0.01) {
             alien.respawn();
+
+
         }
     }
     public double alienX(){

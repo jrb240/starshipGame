@@ -26,22 +26,21 @@ public class Alien implements EnemyObject {
             x = -0.001;
         }
         changeDir();
-//        timer = new Timer();
-//        task = new TimerTask() {
-//            @Override
-//            public void run() {
-//                status = STATE.ALIVE;
-//            }
-//        };
+        timer = new Timer();
     }
     //restart position
     public void respawn(){
         y = Math.random();
         if (Math.random()> 0.5){
             x = 1.001;
-            movementX = -movementX;
+            if (movementX > 0){
+                movementX = -movementX;
+            }
         } else {
             x = -0.001;
+            if (movementX < 0 ){
+                movementX = -movementX;
+            }
         }
         changeDir();
         status = STATE.ALIVE;
@@ -66,6 +65,10 @@ public class Alien implements EnemyObject {
         } else if (y < -0.0015) {
             y = 1.001;
         }
+        if ( x % .2 == 0 ){
+            System.out.println("roll");
+            changeDir();
+        }
     }
 
     @Override
@@ -82,9 +85,9 @@ public class Alien implements EnemyObject {
     }
     public void changeDir(){
         double check = Math.random();
-        if (check < .20){
+        if (check < .3){
             direction = DIRECTION.UP;
-        } else if (0.8 < check) {
+        } else if (0.7 < check) {
             direction = DIRECTION.DOWN;
         } else {
             direction = DIRECTION.STRAIGHT;
@@ -94,9 +97,14 @@ public class Alien implements EnemyObject {
         return status == STATE.ALIVE;
     }
     public void startTimer(){
-        timer.schedule(task,0,40000);
+        task = new TimerTask() {
+            @Override
+            public void run() {
+                status = STATE.ALIVE;
+            }
+        };
+        timer.schedule(task,10000);
     }
     public void stopTimer(){
-        timer.purge();
     }
 }
