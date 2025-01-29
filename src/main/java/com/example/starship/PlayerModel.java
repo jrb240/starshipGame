@@ -8,14 +8,13 @@ public class PlayerModel {
     ArrayList<Star> stars;
     ArrayList<Subscriber> subscribers;
     Player player;
-    private double canvasWidth,canvasHeight,playerMoveSpeed;
+    private double canvasWidth,canvasHeight;
     enum PlayerStatus{ALIVE,DEAD};
     PlayerStatus playerState;
 
     PlayerModel(double width,double height){
         stars = new ArrayList<>();
         subscribers = new ArrayList<>();
-        playerMoveSpeed = 20;
         generateStars(100);
 
         player = new Player();
@@ -42,27 +41,7 @@ public class PlayerModel {
     public double playerYPos(){
         return player.getPosY();
     }
-//    public void moveShip(double dx, double dy){
-//        player.setPosX(player.getPosX()+dx);
-//        player.setPosY(player.getPosY()+dy);
-//        subscribers.forEach(Subscriber::modelChanged);
-//    }
-    public void moveRight(){
-        player.setPosX(xMove(-playerMoveSpeed));
-        subscribers.forEach(Subscriber::modelChanged);
-    }
-    public void moveLeft(){
-        player.setPosX(xMove(playerMoveSpeed));
-        subscribers.forEach(Subscriber::modelChanged);
-    }
-    public void moveUp(){
-        player.setPosY(yMove(-playerMoveSpeed));
-        subscribers.forEach(Subscriber::modelChanged);
-    }
-    public void moveDown(){
-        player.setPosY(yMove(playerMoveSpeed));
-        subscribers.forEach(Subscriber::modelChanged);
-    }
+
     public double[] placingShip(double dx,double dy){
         player.setPosX(player.getPosX()+dx);
         player.setPosY(player.getPosY()+dy);
@@ -166,11 +145,4 @@ public class PlayerModel {
         return canvasWidth;
     }
 
-//    public PlayerStatus getPlayerState() {
-//        return playerState;
-//    }
-//
-//    public double getPlayerMoveSpeed() {
-//        return playerMoveSpeed;
-//    }
 }

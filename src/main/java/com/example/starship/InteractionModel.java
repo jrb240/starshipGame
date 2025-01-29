@@ -1,6 +1,5 @@
 package com.example.starship;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -15,6 +14,8 @@ public class InteractionModel {
     private Alien alien;
     private enum GAMESTATE {DEAD,GOING,STANDBY}
     private GAMESTATE gameState;
+    private double alienBulletSpeed = 6;
+    private double playerBulletSpeed = 6;
     InteractionModel(double width, double height){
         asteroidSet = new ArrayList<>();
         bullets = new ArrayList<>();
@@ -28,7 +29,6 @@ public class InteractionModel {
         gameState = GAMESTATE.STANDBY;
     }
     public void start(){
-//        alien = new Alien();
         System.out.println("Started game");
         level++;
         gameState = GAMESTATE.GOING;
@@ -91,12 +91,15 @@ public class InteractionModel {
         if (asteroidSet.isEmpty()&&level!=0){
             if (cooldown <=0){
                 level++;
+                if (level > 3 && level % 2 == 0){
+                    alien.levelUpAlien();
+                }
                 createAstroids();
                 cooldown = 200;
             }
             cooldown--;
         }
-        rollAlienSpawn();
+        callAlien();
         notifySubscribers();
     }
 
@@ -152,6 +155,7 @@ public class InteractionModel {
         asteroidSet.clear();
         bullets.clear();
         alien.die();
+        alien.restart();
         level = 0;
         score = 0;
     }
@@ -178,8 +182,9 @@ public class InteractionModel {
         double startX = bulletSpawn* xRatio + playerX;
         double startY = bulletSpawn* yRatio + playerY;
 
-        bullets.add(new EnergyBullet(startX,startY,xRatio,yRatio,5));
+        bullets.add(new EnergyBullet(startX,startY,xRatio,yRatio,playerBulletSpeed,false));
     }
+
     public boolean distance(double bX, double bY, double aX, double aY, double aRadius){
         return pythagoras(bX, bY, aX, aY) < aRadius;
     }
@@ -203,13 +208,18 @@ public class InteractionModel {
         return alien.isAlive();
     }
 
-    private void rollAlienSpawn(){
+    private void callAlien(){
         if (gameState == GAMESTATE.GOING && alien.isAlive()){
             alien.move(canvasWidth,canvasHeight);
-        } else if (gameState == GAMESTATE.GOING && alien.isAlive() && Math.random()<0.01) {
+            shootAlien();
+        } else if (gameState == GAMESTATE.GOING && alien.isDead()) {
             alien.respawn();
-
-
+        }
+    }
+    public void shootAlien(){
+        if (alien.shoot()){
+            bullets.add(new EnergyBullet(alienX()*canvasWidth,alienY()*canvasHeight,
+                    alien.getxRatio(),alien.getyRatio(),alienBulletSpeed, true));
         }
     }
     public double alienX(){

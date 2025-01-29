@@ -95,8 +95,18 @@ public class SpaceView extends StackPane implements Subscriber {
         playerPrinter.setLineWidth(0.5);
         playerPrinter.setStroke(Color.ORANGE);
         iModel.getBullets().forEach(bullet->{
-            playerPrinter.fillOval(bullet.positionX-2,bullet.positionY-2,4,4);
-            playerPrinter.strokeOval(bullet.positionX-2,bullet.positionY-2,4,4);
+            if (bullet.isAlien()){
+                playerPrinter.setFill(Color.color(1,0,0));
+                playerPrinter.setStroke(Color.YELLOW);
+                playerPrinter.fillOval(bullet.positionX-2,bullet.positionY-2,4,4);
+                playerPrinter.strokeOval(bullet.positionX-2,bullet.positionY-2,4,4);
+                playerPrinter.setStroke(Color.ORANGE);
+                playerPrinter.setFill(Color.color(1,1,0));
+            } else {
+                playerPrinter.fillOval(bullet.positionX-2,bullet.positionY-2,4,4);
+                playerPrinter.strokeOval(bullet.positionX-2,bullet.positionY-2,4,4);
+            }
+
         });
 
         //draw ship
@@ -120,15 +130,15 @@ public class SpaceView extends StackPane implements Subscriber {
         }
 
         //draw collision points
-//        playerPrinter.setStroke(Color.AQUA);
-//        playerPrinter.setFill(Color.RED);
-//        model.getPlayer().getHitBox().forEach(hitBox->{
-//            playerPrinter.fillOval(hitBox.XPos+model.playerXPos()*myCanvas.getWidth()-2,
-//                    hitBox.YPos+ model.playerYPos()*myCanvas.getHeight()-2,4,4);
-//            playerPrinter.strokeOval(hitBox.XPos+model.playerXPos()*myCanvas.getWidth()-2,
-//                    hitBox.YPos+ model.playerYPos()*myCanvas.getHeight()-2,4,4);
-//        });
-
+        playerPrinter.setStroke(Color.LIMEGREEN);
+        playerPrinter.setFill(Color.LIMEGREEN);
+        double balls = 3;
+        model.getPlayer().getHitBox().forEach(hitBox->{
+            playerPrinter.fillOval(hitBox.XPos+model.playerXPos()*myCanvas.getWidth()-balls/2,
+                    hitBox.YPos+ model.playerYPos()*myCanvas.getHeight()-balls/2,balls,balls);
+            playerPrinter.strokeOval(hitBox.XPos+model.playerXPos()*myCanvas.getWidth()-balls/2,
+                    hitBox.YPos+ model.playerYPos()*myCanvas.getHeight()-balls/2,balls,balls);
+        });
     }
 
     public void setFocus() {

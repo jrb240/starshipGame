@@ -9,19 +9,19 @@ public class EnergyBullet {
     //will be positive or negative 1 only values
     private double xRatio,yRatio;
     private int life;
-    public EnergyBullet(double startX,double startY, double xVector, double yVector,double bulletSpeed) {
+    private boolean alien;
+    public EnergyBullet(double startX,double startY, double xVector, double yVector,double bulletSpeed, boolean isAlien) {
         positionX = startX;
         positionY = startY;
         life = 50;
 
         //set default bullet speed
         this.bulletSpeed = bulletSpeed;
-//        xDirection = xVector*bulletSpeed;
-//        yDirection = yVector*bulletSpeed;
+        this.alien = isAlien;
+
         xRatio = xVector;
         yRatio = yVector;
-//        dX = Math.tan(bulletAngle)*xDirection*bulletSpeed;
-//        dY = Math.tan(bulletAngle)*yDirection*bulletSpeed;
+
         dX = xVector*bulletSpeed;
         dY = yVector*bulletSpeed;
     }
@@ -44,4 +44,5 @@ public class EnergyBullet {
     public Boolean isTimedOut(){
         return life < 0;
     }
+    public boolean isAlien(){return alien;}
 }

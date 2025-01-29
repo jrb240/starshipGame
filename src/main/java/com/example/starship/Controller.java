@@ -30,8 +30,9 @@ public class Controller {
                         return;
                     }
                     iModel.start();}
-                case R -> {iModel.restart();
-                model.restart();}
+                case R -> {
+                    iModel.restart();
+                    model.restart();}
             }
         } else {
             switch (keyEvent.getCode()){

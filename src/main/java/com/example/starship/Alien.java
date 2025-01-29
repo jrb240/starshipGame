@@ -4,50 +4,62 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Alien implements EnemyObject {
+
     enum DIRECTION {STRAIGHT,UP,DOWN}
-    enum STATE {ALIVE,DEAD}
-    private double movementY = 0.0005;
-    private double movementX = 0.001;
-    private double angle;
-    private  double cooldown = 400;
-    private double x,y;
+    enum STATE {ALIVE,DEAD,BEGIN,TIMER}
+    private double movementY = 0.002;
+    private double movementX = 0.002;
+    private final double closeEdge = -.002;
+    private final double farEdge = 1.002;
+    private double x,y,xRatio,yRatio;
     private Timer timer;
     private TimerTask task;
     private DIRECTION direction = DIRECTION.STRAIGHT;
-    private STATE status = STATE.DEAD;
+    private STATE status = STATE.BEGIN;
+    private boolean shoot;
+    private int shootChance;
+    private double spawnTimer;
 
     //be created
     public Alien(){
         y = Math.random();
         if (Math.random()> 0.5){
-            x = 1.001;
+            x = farEdge;
             movementX = -movementX;
         } else {
-            x = -0.001;
+            x = closeEdge;
         }
+        shootChance = 7;
+        spawnTimer = 30;
         changeDir();
         timer = new Timer();
+
     }
     //restart position
     public void respawn(){
         y = Math.random();
         if (Math.random()> 0.5){
-            x = 1.001;
+            x = farEdge;
             if (movementX > 0){
                 movementX = -movementX;
             }
         } else {
-            x = -0.001;
+            x = closeEdge;
             if (movementX < 0 ){
                 movementX = -movementX;
             }
         }
-        changeDir();
-        status = STATE.ALIVE;
+        task = new TimerTask() {
+            @Override
+            public void run() {
+                flipRequest();
+            }
+        };
+        status= STATE.TIMER;
+        double delay = spawnTimer+(spawnTimer*Math.random())/10;
+        timer.schedule(task, (long) delay*1000);
     }
-    public void die(){
-        status = STATE.DEAD;
-    }
+
     @Override
     public void move(double width, double height) {
         x = x + movementX;
@@ -57,17 +69,19 @@ public class Alien implements EnemyObject {
             y = y + movementY;
         }
         //death by travel
-        if (x > 1.0015 || x < -0.0015){
+        if (x > farEdge || x < closeEdge){
             die();
         }
-        if (y > 1.0015){
-            y = -0.001;
-        } else if (y < -0.0015) {
-            y = 1.001;
+        //roll over to the other side on vertical travel
+        if (y > farEdge){
+            y = closeEdge;
+        } else if (y < closeEdge) {
+            y = farEdge;
         }
-        if ( x % .2 == 0 ){
-            System.out.println("roll");
+        //roll to change direction and if you should shoot
+        if ( x % .2 < 0.003 ){
             changeDir();
+            rollShoot();
         }
     }
 
@@ -80,8 +94,26 @@ public class Alien implements EnemyObject {
     public double getPositionY() {
         return y;
     }
-    public void shoot(){
-        //EnergyBullet();
+
+    public double getxRatio() {
+        return xRatio;
+    }
+
+    public double getyRatio() {
+        return yRatio;
+    }
+
+    public boolean shoot(){
+        if (shoot){
+            shoot = false;
+            return true;
+        }
+        return false;
+    }
+    public void rollShoot(){
+        xRatio = (Math.random()-.5)/0.5;
+        yRatio = (Math.random()-.5)/.5;
+        shoot = Math.round(Math.random() * 10) > shootChance;
     }
     public void changeDir(){
         double check = Math.random();
@@ -96,15 +128,39 @@ public class Alien implements EnemyObject {
     public boolean isAlive() {
         return status == STATE.ALIVE;
     }
+    public boolean isDead() {
+        return status == STATE.DEAD;
+    }
+    public void die(){
+        status = STATE.DEAD;
+    }
+    public void restart(){
+        status = STATE.BEGIN;
+        spawnTimer = 30.0;
+        shootChance = 7;
+    }
     public void startTimer(){
+        status = STATE.TIMER;
         task = new TimerTask() {
             @Override
             public void run() {
-                status = STATE.ALIVE;
+                flipRequest();
             }
         };
-        timer.schedule(task,10000);
+        timer.schedule(task,30000);
     }
-    public void stopTimer(){
+    private void flipRequest(){
+        if (status != STATE.BEGIN){
+            status = STATE.ALIVE;
+        }
+    }
+    public void levelUpAlien(){
+        if (shootChance>0){
+            shootChance -=1;
+        }
+        if (spawnTimer >5){
+            spawnTimer -=2;
+        }
+        System.out.println("Shoot Cahnce: "+shootChance+"\nSpawn Timer: "+spawnTimer);
     }
 }
