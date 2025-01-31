@@ -14,7 +14,7 @@ public class Player {
     private double timer;
     private BufferedImage ship;
     private Image testShip;
-    private double scaler;
+    private double scaler = 1;
     private ArrayList<ShipCollisionPoints> hitBox;
 
     public Player(){
@@ -29,7 +29,7 @@ public class Player {
         hitBox = new ArrayList<>();
 
         ship = null;
-        scaler = 0.25;
+//        scaler = 0.25;
         //182x121
 //        testShip = new Image("ship_cut.png");
 //        getShipImage();
@@ -117,22 +117,57 @@ public class Player {
     //TODO:Remake this with a ship object as there is too much to keep track of
     public Image shipSelection(String shipName){
         //front
+        //plate
         this.hitBox.add(new ShipCollisionPoints(-91,0,scaler));
-        this.hitBox.add(new ShipCollisionPoints(-84,42,scaler));
-        this.hitBox.add(new ShipCollisionPoints(-84,-42,scaler));
+        this.hitBox.add(new ShipCollisionPoints(-89.25,10.5,scaler));
+        this.hitBox.add(new ShipCollisionPoints(-89.25,-10.5,scaler));
+        this.hitBox.add(new ShipCollisionPoints(-87.5,21,scaler));
+        this.hitBox.add(new ShipCollisionPoints(-87.5,-21,scaler));
+        this.hitBox.add(new ShipCollisionPoints(-85.75,31.5,scaler));
+        this.hitBox.add(new ShipCollisionPoints(-85.75,-31.5,scaler));
+        this.hitBox.add(new ShipCollisionPoints(-83,41,scaler));
+        this.hitBox.add(new ShipCollisionPoints(-83,-41,scaler));
+        //side plates
+        this.hitBox.add(new ShipCollisionPoints(-72,44,scaler));
+        this.hitBox.add(new ShipCollisionPoints(-72,-44,scaler));
+        this.hitBox.add(new ShipCollisionPoints(-62,45,scaler));
+        this.hitBox.add(new ShipCollisionPoints(-62,-45,scaler));
         //Guns
-        this.hitBox.add(new ShipCollisionPoints(-54,54,scaler));
-        this.hitBox.add(new ShipCollisionPoints(-54,-54,scaler));
-        this.hitBox.add(new ShipCollisionPoints(-18,58,scaler));
-        this.hitBox.add(new ShipCollisionPoints(-18,-58,scaler));
+        //front gun turrets
+        this.hitBox.add(new ShipCollisionPoints(-54,52,scaler));
+        this.hitBox.add(new ShipCollisionPoints(-54,-52,scaler));
+        this.hitBox.add(new ShipCollisionPoints(-46,52,scaler));
+        this.hitBox.add(new ShipCollisionPoints(-46,-52,scaler));
+        //rear gun turrets
+        this.hitBox.add(new ShipCollisionPoints(-18,56,scaler));
+        this.hitBox.add(new ShipCollisionPoints(-18,-56,scaler));
+        this.hitBox.add(new ShipCollisionPoints(-10,56,scaler));
+        this.hitBox.add(new ShipCollisionPoints(-10,-56,scaler));
         //midShips
-        this.hitBox.add(new ShipCollisionPoints(-2,48,scaler));
-        this.hitBox.add(new ShipCollisionPoints(-2,-48,scaler));
+        this.hitBox.add(new ShipCollisionPoints(-40,45,scaler));
+        this.hitBox.add(new ShipCollisionPoints(-40,-45,scaler));
+        this.hitBox.add(new ShipCollisionPoints(-31,45,scaler));
+        this.hitBox.add(new ShipCollisionPoints(-31,-45,scaler));
+        this.hitBox.add(new ShipCollisionPoints(-22,47,scaler));
+        this.hitBox.add(new ShipCollisionPoints(-22,-47,scaler));
+        //tail
+        this.hitBox.add(new ShipCollisionPoints(-5,47.5,scaler));
+        this.hitBox.add(new ShipCollisionPoints(-5,-47.5,scaler));
+        this.hitBox.add(new ShipCollisionPoints(0,42,scaler));
+        this.hitBox.add(new ShipCollisionPoints(0,-42,scaler));
+        this.hitBox.add(new ShipCollisionPoints(10.5,42,scaler));
+        this.hitBox.add(new ShipCollisionPoints(10.5,-42,scaler));
         this.hitBox.add(new ShipCollisionPoints(22,41,scaler));
         this.hitBox.add(new ShipCollisionPoints(22,-41,scaler));
-        //tail
-        this.hitBox.add(new ShipCollisionPoints(59,20,scaler));
-        this.hitBox.add(new ShipCollisionPoints(59,-20,scaler));
+        this.hitBox.add(new ShipCollisionPoints(33,33,scaler));
+        this.hitBox.add(new ShipCollisionPoints(33,-33,scaler));
+        this.hitBox.add(new ShipCollisionPoints(42,22,scaler));
+        this.hitBox.add(new ShipCollisionPoints(42,-22,scaler));
+        //engines
+        this.hitBox.add(new ShipCollisionPoints(57,20,scaler));
+        this.hitBox.add(new ShipCollisionPoints(57,-20,scaler));
+        this.hitBox.add(new ShipCollisionPoints(72,17,scaler));
+        this.hitBox.add(new ShipCollisionPoints(72,-17,scaler));
         this.hitBox.add(new ShipCollisionPoints(87,15,scaler));
         this.hitBox.add(new ShipCollisionPoints(87,0,scaler));
         this.hitBox.add(new ShipCollisionPoints(87,-15,scaler));
@@ -141,5 +176,11 @@ public class Player {
 
     public ArrayList<ShipCollisionPoints> getHitBox() {
         return hitBox;
+    }
+    public void restart(){
+        posX = 0.5;
+        posY = 0.5;
+        xSpeed = 0;
+        ySpeed = 0;
     }
 }

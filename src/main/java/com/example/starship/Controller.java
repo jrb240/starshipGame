@@ -25,24 +25,32 @@ public class Controller {
     public void handleKeyPressed(KeyEvent keyEvent) {
         if(keyEvent.isControlDown()){
             switch (keyEvent.getCode()){
-                case S -> {iModel.start();}
-                case R -> {iModel.restart();
-                model.restart();}
+                case S -> {
+                    if (!(iModel.getLevel()==0)){
+                        return;
+                    }
+                    iModel.start();}
+                case R -> {
+                    iModel.restart();
+                    model.restart();}
             }
         } else {
             switch (keyEvent.getCode()){
                 case W ->{
+                    if (!model.isPlayerAlive()){
+                        return;
+                    }
                     model.increaseSpeed(mouseX,mouseY,
-                            model.playerXPos()*model.canvasWidth
-                            ,model.playerYPos()*model.canvasHeight);
+                            model.playerXPos()*model.getCanvasWidth()
+                            ,model.playerYPos()*model.getCanvasHeight());
                 }
-//                case A -> {model.moveRight();}
-//                case W -> {model.moveUp();}
-//                case D -> {model.moveLeft();}
-//                case S -> {model.moveDown();}
-                case SPACE -> {iModel.shoot(mouseX,mouseY,
-                        model.playerXPos()*model.canvasWidth
-                        ,model.playerYPos()*model.canvasHeight);}
+                case SPACE -> {
+                    if (!model.isPlayerAlive()){
+                        return;
+                    }
+                    iModel.shoot(mouseX,mouseY,
+                            model.playerXPos()*model.getCanvasWidth()
+                            ,model.playerYPos()*model.getCanvasHeight());}
             }
         }
 

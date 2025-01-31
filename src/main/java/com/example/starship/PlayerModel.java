@@ -8,29 +8,13 @@ public class PlayerModel {
     ArrayList<Star> stars;
     ArrayList<Subscriber> subscribers;
     Player player;
-    double canvasWidth,canvasHeight,playerMoveSpeed;
-
-    public void restart() {
-        if (playerState==PlayerStatus.DEAD){
-            playerState = PlayerStatus.ALIVE;
-        }
-    }
-
-    public boolean isPlayerAlive() {
-        if (playerState==PlayerStatus.ALIVE){
-            return true;
-        } else {
-            return false;
-        }
-    }
-
+    private double canvasWidth,canvasHeight;
     enum PlayerStatus{ALIVE,DEAD};
     PlayerStatus playerState;
 
     PlayerModel(double width,double height){
         stars = new ArrayList<>();
         subscribers = new ArrayList<>();
-        playerMoveSpeed = 20;
         generateStars(100);
 
         player = new Player();
@@ -57,27 +41,7 @@ public class PlayerModel {
     public double playerYPos(){
         return player.getPosY();
     }
-//    public void moveShip(double dx, double dy){
-//        player.setPosX(player.getPosX()+dx);
-//        player.setPosY(player.getPosY()+dy);
-//        subscribers.forEach(Subscriber::modelChanged);
-//    }
-    public void moveRight(){
-        player.setPosX(xMove(-playerMoveSpeed));
-        subscribers.forEach(Subscriber::modelChanged);
-    }
-    public void moveLeft(){
-        player.setPosX(xMove(playerMoveSpeed));
-        subscribers.forEach(Subscriber::modelChanged);
-    }
-    public void moveUp(){
-        player.setPosY(yMove(-playerMoveSpeed));
-        subscribers.forEach(Subscriber::modelChanged);
-    }
-    public void moveDown(){
-        player.setPosY(yMove(playerMoveSpeed));
-        subscribers.forEach(Subscriber::modelChanged);
-    }
+
     public double[] placingShip(double dx,double dy){
         player.setPosX(player.getPosX()+dx);
         player.setPosY(player.getPosY()+dy);
@@ -157,4 +121,28 @@ public class PlayerModel {
     public double pythagoras(double bX, double bY, double aX, double aY){
         return Math.sqrt((bX-aX)*(bX-aX)+(bY-aY)*(bY-aY));
     }
+
+    public void restart() {
+        if (playerState==PlayerStatus.DEAD){
+            playerState = PlayerStatus.ALIVE;
+            player.restart();
+        }
+    }
+
+    public boolean isPlayerAlive() {
+        if (playerState==PlayerStatus.ALIVE){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public double getCanvasHeight() {
+        return canvasHeight;
+    }
+
+    public double getCanvasWidth() {
+        return canvasWidth;
+    }
+
 }
