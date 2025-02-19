@@ -61,7 +61,7 @@ public class Alien implements EnemyObject {
     }
 
     @Override
-    public void move(double width, double height) {
+    public void move() {
         x = x + movementX;
         if (direction == DIRECTION.DOWN){
             y = y + movementY;

@@ -58,7 +58,7 @@ public class InteractionModel {
                 positionY = Math.random();
                 positionX = 0.9;
             }
-            asteroidSet.add(new DemoAsteroid(positionX,positionY));
+            asteroidSet.add(new DemoAsteroid(positionX,positionY,canvasWidth,canvasHeight));
         }
         subscribers.forEach(Subscriber::modelChanged);
     }
@@ -66,7 +66,7 @@ public class InteractionModel {
     public void update() {
         ArrayList<EnergyBullet> cleanBullets = new ArrayList<>();
         asteroidSet.forEach(demoAsteroid->{
-            demoAsteroid.move(canvasWidth,canvasHeight);
+            demoAsteroid.move();
         });
         //clean up old bullets
         AtomicInteger popBullet = new AtomicInteger();
@@ -210,7 +210,7 @@ public class InteractionModel {
 
     private void callAlien(){
         if (gameState == GAMESTATE.GOING && alien.isAlive()){
-            alien.move(canvasWidth,canvasHeight);
+            alien.move();
             shootAlien();
         } else if (gameState == GAMESTATE.GOING && alien.isDead()) {
             alien.respawn();

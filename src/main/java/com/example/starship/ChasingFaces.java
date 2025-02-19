@@ -11,7 +11,7 @@ public class ChasingFaces implements EnemyObject {
         correction(playerX,playerY);
     }
     @Override
-    public void move(double width, double height) {
+    public void move() {
 
     }
     public void pushed(){}

@@ -6,16 +6,38 @@ import java.util.concurrent.atomic.AtomicBoolean;
 //start this up on Model or IModel
 public class MasterBoX implements PingMasterBox {
     private ArrayList<ColliderBox> collisionAreas;
+    private ArrayList<ColliderBox> betweenLayer;
     public MasterBoX(double canvasWidth,double canvasHeight){
         collisionAreas = new ArrayList<>();
+        betweenLayer = new ArrayList<>();
+        //top left
+        betweenLayer.add(new ColliderBox(0,canvasWidth/2,0,canvasHeight/2));
+        //top right
+        betweenLayer.add(new ColliderBox(canvasWidth/2,canvasWidth,0,canvasHeight/2));
+        //bottom left
+        betweenLayer.add(new ColliderBox(0,canvasWidth/2,canvasHeight/2,canvasHeight));
+        //bottom right
+        betweenLayer.add(new ColliderBox(canvasWidth/2,canvasWidth,canvasHeight/2,canvasHeight));
+        //make our bottom layer
         for (double xMark = 0; xMark < canvasWidth; xMark = xMark + 100){
             for (double yMark = 0; yMark < canvasHeight; yMark = yMark + 100){
-                collisionAreas.add(new ColliderBox(xMark,yMark,xMark+100,yMark+100));
+                if (yMark < canvasHeight/2 && xMark < canvasWidth/2){ //top right
+                    betweenLayer.getFirst().addChild(new ColliderBox(xMark,xMark+100,yMark,yMark+100));
+                } else if (yMark >= canvasHeight/2 && xMark < canvasWidth/2) { //top left
+                    betweenLayer.get(1).addChild(new ColliderBox(xMark,xMark+100,yMark,yMark+100));
+                } else if (yMark < canvasHeight/2 && xMark >= canvasWidth/2) { //bottom right
+                    betweenLayer.get(2).addChild(new ColliderBox(xMark,xMark+100,yMark,yMark+100));
+                } else if (yMark >= canvasHeight/2 && xMark >= canvasWidth/2) { //bottom left
+                    betweenLayer.getLast().addChild(new ColliderBox(xMark,xMark+100,yMark,yMark+100));
+                } else {
+                    System.out.println("Collision System found out of bounds object");
+                }
             }
         }
+
     }
     public boolean isTheirConflict(){
-        for (ColliderBox area: collisionAreas){
+        for (ColliderBox area: betweenLayer){
             if (area.isThereConflict()){
                 return true;
             }
@@ -24,7 +46,9 @@ public class MasterBoX implements PingMasterBox {
     }
 
     public void updateBoxes(){
-
+        betweenLayer.forEach(child->{
+            child.update();
+        });
     }
 
     @Override

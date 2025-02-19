@@ -1,7 +1,5 @@
 package com.example.starship;
 
-import java.util.ArrayList;
-
 /***
  * We are generating some circles to act as asteroids with random spawns
  * and movement speeds
@@ -14,15 +12,18 @@ public class DemoAsteroid implements EnemyObject {
     enum Size{BIG,MED,SMALL}
     Size asteroidSize;
     private boolean faces;
+    private double canvasWidth,canvasHeight;
     //getRadius returns
     double bigAsteroid = 55.0;
     double medAsteroid = 24.6;
     double smallAsteroid = 10.6;
 
-    public DemoAsteroid(double x,double y){
+    public DemoAsteroid(double x,double y, double canvasWidth,double canvasHeight){
         positionX = x;
         positionY = y;
         faces = false;
+        this.canvasWidth = canvasWidth;
+        this.canvasHeight = canvasHeight;
 
         //we have placed the asteroid and now we need a direction for it to
         //move in. We have a move speed of at least 1 set.
@@ -104,9 +105,9 @@ public class DemoAsteroid implements EnemyObject {
         this.asteroidSize = asteroidSize;
     }
     @Override
-    public void move(double width, double height) {
-        positionX = (positionX*width + dX)/width;
-        positionY = (positionY*height + dY)/height;
+    public void move() {
+        positionX = (positionX*canvasWidth + dX)/canvasWidth;
+        positionY = (positionY*canvasHeight + dY)/canvasHeight;
         //TODO: better method of checking this
         //moving left
         if (positionX < -0.002){
