@@ -25,7 +25,7 @@ public class DemoAsteroid implements EnemyObject {
         this.canvasWidth = canvasWidth;
         this.canvasHeight = canvasHeight;
 
-        //we have placed the asteroid and now we need a direction for it to
+        //we have placed the asteroid, and now we need a direction for it to
         //move in. We have a move speed of at least 1 set.
         speed = Math.random()*5;
         if (speed < 1){

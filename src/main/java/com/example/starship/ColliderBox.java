@@ -31,7 +31,7 @@ public class ColliderBox {
             }
             return false;
         } else {
-            return (!asteroidSet.isEmpty() && !bullets.isEmpty());
+            return !(asteroidSet.isEmpty() && bullets.isEmpty());
         }
     }
 
@@ -80,13 +80,23 @@ public class ColliderBox {
     }
 
     public void update() {
+        //collider boxes should probably handle moving as there are a
+        //few things that need to happen after things have moved
         if (!asteroidSet.isEmpty()) {
-            asteroidSet.forEach(demoAsteroid -> {
-                demoAsteroid.move();
-            });
+            asteroidSet.forEach(DemoAsteroid::move);
         }
         if (!bullets.isEmpty()) {
             bullets.forEach(EnergyBullet::move);
+        }
+    }
+    public void insertAsteroidIntoCollider(DemoAsteroid newAsteroid){
+        if (children.isEmpty()) {
+            addAsteroid(newAsteroid);
+        } else {
+            //TODO: complete this. This is placing the asteroids into the smaller boxes
+            double placeX = newAsteroid.getPositionX();
+            double placeY = newAsteroid.getPositionY();
+            double size = newAsteroid.getRadius();
         }
     }
 }
