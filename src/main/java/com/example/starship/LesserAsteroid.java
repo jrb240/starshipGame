@@ -1,8 +1,8 @@
 package com.example.starship;
 
 public class LesserAsteroid extends DemoAsteroid {
-    public LesserAsteroid(double x, double y,DemoAsteroid step) {
-        super(x, y);
+    public LesserAsteroid(double x, double y,double canvasWidth, double canasHeight, DemoAsteroid step) {
+        super(x, y,canvasWidth,canasHeight);
         switch (step.getAsteroidSize()){
             case BIG -> {
                 this.setAsteroidSize(Size.MED);

@@ -137,8 +137,27 @@ public class DemoAsteroid implements EnemyObject {
     public double getPositionY() {
         return positionY;
     }
+
+    @Override
+    public boolean isThisAHit(double x, double y) {
+        double rad = 0;
+        switch (this.asteroidSize){
+            case BIG -> rad = bigAsteroid;
+            case MED -> rad = medAsteroid;
+            case SMALL -> rad = smallAsteroid;
+        }
+        if (pythagoras(this.positionX,this.positionY,x,y) <= rad){
+            return true;
+        }
+        return false;
+    }
+
     public void addFaces() {
         faces = true;
     }
     public boolean hasFaces(){return faces;}
+
+    public double pythagoras(double bX, double bY, double aX, double aY){
+        return Math.sqrt((bX-aX)*(bX-aX)+(bY-aY)*(bY-aY));
+    }
 }

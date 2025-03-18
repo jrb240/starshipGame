@@ -129,7 +129,7 @@ public class InteractionModel {
                             } else {
                                 score = score + 50;
                             }
-                            asteroidSet.add(new LesserAsteroid(asteroidSet.get(asteroidStep).getPositionX(),asteroidSet.get(asteroidStep).getPositionY(),asteroidSet.get(asteroidStep)));
+                            asteroidSet.add(new LesserAsteroid(asteroidSet.get(asteroidStep).getPositionX(),asteroidSet.get(asteroidStep).getPositionY(),canvasWidth,canvasHeight,asteroidSet.get(asteroidStep)));
                             asteroidSet.get(asteroidStep).sizeDown();
                             bullets.remove(bulletStep);
                             asteroidStep++;

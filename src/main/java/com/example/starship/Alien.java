@@ -95,6 +95,12 @@ public class Alien implements EnemyObject {
         return y;
     }
 
+    @Override
+    public boolean isThisAHit(double x, double Y) {
+
+        return false;
+    }
+
     public double getxRatio() {
         return xRatio;
     }

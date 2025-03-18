@@ -25,6 +25,12 @@ public class ChasingFaces implements EnemyObject {
     public double getPositionY() {
         return y;
     }
+
+    @Override
+    public boolean isThisAHit(double x, double Y) {
+        return false;
+    }
+
     public void correction(double playerXPosition,double playerYPosition){
 
     }

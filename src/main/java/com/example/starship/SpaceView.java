@@ -119,9 +119,9 @@ public class SpaceView extends StackPane implements Subscriber {
             playerPrinter.drawImage(model.getShip(), -91, -60.5);
             playerPrinter.restore();
         }
-
+        //draw alien
         if (iModel.isAlienAlive()){
-            playerPrinter.setFill(Color.CADETBLUE);
+            playerPrinter.setFill(Color.color(.12,.57,.7));
             playerPrinter.setStroke(Color.LIMEGREEN);
             playerPrinter.fillOval(
                     myCanvas.getWidth() * iModel.alienX()-25,
@@ -130,15 +130,15 @@ public class SpaceView extends StackPane implements Subscriber {
         }
 
         //draw collision points
-        playerPrinter.setStroke(Color.LIMEGREEN);
-        playerPrinter.setFill(Color.LIMEGREEN);
-        double balls = 3;
-        model.getPlayer().getHitBox().forEach(hitBox->{
-            playerPrinter.fillOval(hitBox.XPos+model.playerXPos()*myCanvas.getWidth()-balls/2,
-                    hitBox.YPos+ model.playerYPos()*myCanvas.getHeight()-balls/2,balls,balls);
-            playerPrinter.strokeOval(hitBox.XPos+model.playerXPos()*myCanvas.getWidth()-balls/2,
-                    hitBox.YPos+ model.playerYPos()*myCanvas.getHeight()-balls/2,balls,balls);
-        });
+//        playerPrinter.setStroke(Color.LIMEGREEN);
+//        playerPrinter.setFill(Color.LIMEGREEN);
+//        double balls = 3;
+//        model.getPlayer().getHitBox().forEach(hitBox->{
+//            playerPrinter.fillOval(hitBox.XPos+model.playerXPos()*myCanvas.getWidth()-balls/2,
+//                    hitBox.YPos+ model.playerYPos()*myCanvas.getHeight()-balls/2,balls,balls);
+//            playerPrinter.strokeOval(hitBox.XPos+model.playerXPos()*myCanvas.getWidth()-balls/2,
+//                    hitBox.YPos+ model.playerYPos()*myCanvas.getHeight()-balls/2,balls,balls);
+//        });
     }
 
     public void setFocus() {
