@@ -12,6 +12,7 @@ public class InteractionModel {
     private int level,cooldown;
     private long score;
     private Alien alien;
+
     private enum GAMESTATE {DEAD,GOING,STANDBY}
     private GAMESTATE gameState;
     private double alienBulletSpeed = 6;
@@ -227,6 +228,13 @@ public class InteractionModel {
     }
     public double alienY(){
         return alien.getPositionY();
+    }
+    public double getAlienWidth() {
+        return alien.getWidth();
+    }
+
+    public double getAlienHeight() {
+        return alien.getHeight();
     }
 
 }

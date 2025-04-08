@@ -11,6 +11,9 @@ public class Alien implements EnemyObject {
     private double movementX = 0.002;
     private final double closeEdge = -.002;
     private final double farEdge = 1.002;
+    private final double height = 20; //double the value we want for math
+    private final double width = 50;  // ^ ditto
+
     private double x,y,xRatio,yRatio;
     private Timer timer;
     private TimerTask task;
@@ -168,5 +171,27 @@ public class Alien implements EnemyObject {
             spawnTimer -=2;
         }
         System.out.println("Shoot Cahnce: "+shootChance+"\nSpawn Timer: "+spawnTimer);
+    }
+    public double pythagoras(double bX, double bY, double aX, double aY){
+        return Math.sqrt((bX-aX)*(bX-aX)+(bY-aY)*(bY-aY));
+    }
+    //TODO: Divide the by the canvas demensions
+    public double elipticalRadius(double x,double y){
+
+
+        double xDif = Math.abs(this.x - x);
+        double yDif = Math.abs(this.y - y);
+        double angle = Math.atan(y/x);
+
+        return  ((height*width)/2)/ Math.sqrt((width/2)*(width/2)*Math.sin(angle)*Math.sin(angle)
+                +(height/2)*(height/2)*Math.cos(angle)*Math.cos(angle));
+//        return 0;
+    }
+    public double getWidth() {
+        return width;
+    }
+
+    public double getHeight() {
+        return height;
     }
 }

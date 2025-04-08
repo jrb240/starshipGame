@@ -7,7 +7,6 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 
 public class SpaceView extends StackPane implements Subscriber {
 
@@ -124,9 +123,9 @@ public class SpaceView extends StackPane implements Subscriber {
             playerPrinter.setFill(Color.color(.12,.57,.7));
             playerPrinter.setStroke(Color.LIMEGREEN);
             playerPrinter.fillOval(
-                    myCanvas.getWidth() * iModel.alienX()-25,
-                    myCanvas.getHeight() * iModel.alienY()-10,
-                    50,20);
+                    myCanvas.getWidth() * iModel.alienX()-iModel.getAlienWidth()/2,
+                    myCanvas.getHeight() * iModel.alienY()-iModel.getAlienHeight()/2,
+                    iModel.getAlienWidth(),iModel.getAlienHeight());
         }
 
         //draw collision points
