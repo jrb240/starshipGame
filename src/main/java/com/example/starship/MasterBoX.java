@@ -19,22 +19,43 @@ public class MasterBoX implements PingMasterBox {
         //bottom right
         betweenLayer.add(new ColliderBox(canvasWidth/2,canvasWidth,canvasHeight/2,canvasHeight));
         //make our bottom layer
+        createGrid(betweenLayer,canvasWidth,canvasHeight);
+//        for (double xMark = 0; xMark < canvasWidth; xMark = xMark + 100){
+//            for (double yMark = 0; yMark < canvasHeight; yMark = yMark + 100){
+//                if (yMark < canvasHeight/2 && xMark < canvasWidth/2){ //top right
+//                    betweenLayer.getFirst().addChild(new ColliderBox(xMark,xMark+100,yMark,yMark+100));
+//                } else if (yMark >= canvasHeight/2 && xMark < canvasWidth/2) { //top left
+//                    betweenLayer.get(1).addChild(new ColliderBox(xMark,xMark+100,yMark,yMark+100));
+//                } else if (yMark < canvasHeight/2 && xMark >= canvasWidth/2) { //bottom right
+//                    betweenLayer.get(2).addChild(new ColliderBox(xMark,xMark+100,yMark,yMark+100));
+//                } else if (yMark >= canvasHeight/2 && xMark >= canvasWidth/2) { //bottom left
+//                    betweenLayer.getLast().addChild(new ColliderBox(xMark,xMark+100,yMark,yMark+100));
+//                } else {
+//                    System.out.println("Collision System found out of bounds object");
+//                }
+//            }
+//        }
+
+    }
+    private void createGrid(ArrayList<ColliderBox> grid,double canvasWidth, double canvasHeight){
         for (double xMark = 0; xMark < canvasWidth; xMark = xMark + 100){
             for (double yMark = 0; yMark < canvasHeight; yMark = yMark + 100){
                 if (yMark < canvasHeight/2 && xMark < canvasWidth/2){ //top right
-                    betweenLayer.getFirst().addChild(new ColliderBox(xMark,xMark+100,yMark,yMark+100));
+                    grid.getFirst().addChild(new ColliderBox(xMark,xMark+100,yMark,yMark+100));
                 } else if (yMark >= canvasHeight/2 && xMark < canvasWidth/2) { //top left
-                    betweenLayer.get(1).addChild(new ColliderBox(xMark,xMark+100,yMark,yMark+100));
+                    grid.get(1).addChild(new ColliderBox(xMark,xMark+100,yMark,yMark+100));
                 } else if (yMark < canvasHeight/2 && xMark >= canvasWidth/2) { //bottom right
-                    betweenLayer.get(2).addChild(new ColliderBox(xMark,xMark+100,yMark,yMark+100));
+                    grid.get(2).addChild(new ColliderBox(xMark,xMark+100,yMark,yMark+100));
                 } else if (yMark >= canvasHeight/2 && xMark >= canvasWidth/2) { //bottom left
-                    betweenLayer.getLast().addChild(new ColliderBox(xMark,xMark+100,yMark,yMark+100));
+                    grid.getLast().addChild(new ColliderBox(xMark,xMark+100,yMark,yMark+100));
                 } else {
                     System.out.println("Collision System found out of bounds object");
                 }
             }
         }
-
+    }
+    private void interlockGridTiles(ArrayList<ColliderBox> grid){
+        
     }
     public boolean isTheirConflict(){
         for (ColliderBox area: betweenLayer){

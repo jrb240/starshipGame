@@ -99,9 +99,8 @@ public class Alien implements EnemyObject {
     }
 
     @Override
-    public boolean isThisAHit(double x, double Y) {
-
-        return false;
+    public boolean isThisAHit(double X, double Y) {
+        return pythagoras(X, Y, this.x, this.y) < ellipticalRadius(X, Y);
     }
 
     public double getxRatio() {
@@ -175,17 +174,16 @@ public class Alien implements EnemyObject {
     public double pythagoras(double bX, double bY, double aX, double aY){
         return Math.sqrt((bX-aX)*(bX-aX)+(bY-aY)*(bY-aY));
     }
-    //TODO: Divide the by the canvas demensions
-    public double elipticalRadius(double x,double y){
+    //TODO: Divide the by the canvas deminsions
+    public double ellipticalRadius(double x,double y){
 
 
         double xDif = Math.abs(this.x - x);
         double yDif = Math.abs(this.y - y);
         double angle = Math.atan(y/x);
 
-        return  ((height*width)/2)/ Math.sqrt((width/2)*(width/2)*Math.sin(angle)*Math.sin(angle)
-                +(height/2)*(height/2)*Math.cos(angle)*Math.cos(angle));
-//        return 0;
+        return  ((yDif*xDif)/2)/ Math.sqrt((xDif/2)*(xDif/2)*Math.sin(angle)*Math.sin(angle)
+                +(yDif/2)*(yDif/2)*Math.cos(angle)*Math.cos(angle));
     }
     public double getWidth() {
         return width;
