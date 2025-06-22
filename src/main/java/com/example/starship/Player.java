@@ -33,7 +33,7 @@ public class Player {
         //182x121
 //        testShip = new Image("ship_cut.png");
 //        getShipImage();
-        testShip = shipSelection("ship_cut.png");
+        testShip = shipSelection("ship_blah.png");
 
     }
 

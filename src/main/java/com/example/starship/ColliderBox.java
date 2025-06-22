@@ -2,6 +2,7 @@ package com.example.starship;
 
 import java.util.ArrayList;
 
+
 public class ColliderBox {
     private ArrayList<DemoAsteroid> asteroidSet;
     private ArrayList<EnergyBullet> bullets;
