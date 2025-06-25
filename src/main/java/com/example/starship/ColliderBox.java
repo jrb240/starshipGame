@@ -100,4 +100,8 @@ public class ColliderBox {
             double size = newAsteroid.getRadius();
         }
     }
+
+    public ArrayList<ColliderBox> getChildren() {
+        return children;
+    }
 }

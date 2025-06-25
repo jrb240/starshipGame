@@ -1,7 +1,8 @@
 package com.example.starship;
 
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.HashMap;
+
 
 /***
  * Goals of this Class
@@ -23,9 +24,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class MasterBoX implements PingMasterBox {
     private ArrayList<ColliderBox> collisionAreas;
     private ArrayList<ColliderBox> betweenLayer;
+    private HashMap<String,ColliderBox> objectInserterMap;
     public MasterBoX(double canvasWidth,double canvasHeight){
         collisionAreas = new ArrayList<>();
         betweenLayer = new ArrayList<>();
+        objectInserterMap = new HashMap<>();
         //top left
         betweenLayer.add(new ColliderBox(0,canvasWidth/2,0,canvasHeight/2));
         //top right
@@ -54,16 +57,22 @@ public class MasterBoX implements PingMasterBox {
 
     }
     private void createGrid(ArrayList<ColliderBox> grid,double canvasWidth, double canvasHeight){
+        //fill by columns
         for (double xMark = 0; xMark < canvasWidth; xMark = xMark + 100){
             for (double yMark = 0; yMark < canvasHeight; yMark = yMark + 100){
+                ColliderBox currentBox = new ColliderBox(xMark,xMark+100,yMark,yMark+100);
+                //TODO: this needs a guard
+                String boxLocationName = String.valueOf(Math.round(xMark/100)) +String.valueOf(Math.round(yMark/100));
+//                System.out.println(boxLocationName);
+                objectInserterMap.put(boxLocationName,currentBox);
                 if (yMark < canvasHeight/2 && xMark < canvasWidth/2){ //top right
-                    grid.getFirst().addChild(new ColliderBox(xMark,xMark+100,yMark,yMark+100));
+                    grid.getFirst().addChild(currentBox);
                 } else if (yMark >= canvasHeight/2 && xMark < canvasWidth/2) { //top left
-                    grid.get(1).addChild(new ColliderBox(xMark,xMark+100,yMark,yMark+100));
+                    grid.get(1).addChild(currentBox);
                 } else if (yMark < canvasHeight/2 && xMark >= canvasWidth/2) { //bottom right
-                    grid.get(2).addChild(new ColliderBox(xMark,xMark+100,yMark,yMark+100));
+                    grid.get(2).addChild(currentBox);
                 } else if (yMark >= canvasHeight/2 && xMark >= canvasWidth/2) { //bottom left
-                    grid.getLast().addChild(new ColliderBox(xMark,xMark+100,yMark,yMark+100));
+                    grid.getLast().addChild(currentBox);
                 } else {
                     System.out.println("Collision System found out of bounds object");
                 }
@@ -74,8 +83,11 @@ public class MasterBoX implements PingMasterBox {
         //first lay is for boxes, and then each has the full boxes
         //TODO: take every box, and start connecting all their children together
         //In 2 steps. Connect the 4, and then connect all grid squares
+        ArrayList<ArrayList<ColliderBox>> allCollisionBoxes = new ArrayList<>(); //should replace with hashmap
         betweenLayer.forEach(box->{
+             allCollisionBoxes.add(box.getChildren());
         });
+
     }
     public boolean isTheirConflict(){
         for (ColliderBox area: betweenLayer){
@@ -130,5 +142,21 @@ public class MasterBoX implements PingMasterBox {
     @Override
     public void passAsteroid(DemoAsteroid asteroid) {
 
+    }
+    public HashMap<String,ColliderBox> getMap(){
+        return objectInserterMap;
+    }
+
+    public static void main(String[] args) {
+        String cut = "**************************************************************************************";
+        System.out.println("        **Constructor Testing**");
+        MasterBoX testing = new MasterBoX(200,200);
+        System.out.println("Constructor ran without issue");
+        System.out.println(cut);
+        System.out.println("        **Hashmap Testing**");
+        System.out.println(testing.getMap().size());
+        testing.getMap().forEach((s, colliderBox) -> {
+            System.out.println(s);
+        });
     }
 }
