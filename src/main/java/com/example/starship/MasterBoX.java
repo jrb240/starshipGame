@@ -2,6 +2,7 @@ package com.example.starship;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 
 /***
@@ -25,10 +26,13 @@ public class MasterBoX implements PingMasterBox {
     private ArrayList<ColliderBox> collisionAreas;
     private ArrayList<ColliderBox> betweenLayer;
     private HashMap<String,ColliderBox> objectInserterMap;
+    private double canvasWidth,canvasHeight;
     public MasterBoX(double canvasWidth,double canvasHeight){
         collisionAreas = new ArrayList<>();
         betweenLayer = new ArrayList<>();
         objectInserterMap = new HashMap<>();
+        this.canvasWidth = canvasWidth;
+        this.canvasHeight = canvasHeight;
         //top left
         betweenLayer.add(new ColliderBox(0,canvasWidth/2,0,canvasHeight/2));
         //top right
@@ -84,8 +88,43 @@ public class MasterBoX implements PingMasterBox {
         //TODO: take every box, and start connecting all their children together
         //In 2 steps. Connect the 4, and then connect all grid squares
         ArrayList<ArrayList<ColliderBox>> allCollisionBoxes = new ArrayList<>(); //should replace with hashmap
-        betweenLayer.forEach(box->{
-             allCollisionBoxes.add(box.getChildren());
+        String rightColumn = String.valueOf(Math.round(canvasWidth/100));
+        long farRightColNum = Math.round(canvasWidth/100);
+        String bottomRow = String.valueOf(Math.round(canvasHeight/100));
+        long veryBotRow = Math.round(canvasHeight/100);
+        //TODO: complete this and remove old version
+        for (int x = 0; x < farRightColNum; x++) {
+            for (int y = 0; y < veryBotRow; y++) {
+                //Found this is actually going to be more effective
+                String boxLocationName = String.valueOf(x) +String.valueOf(y);
+                if (Objects.equals(boxLocationName, "00")) {
+                    ColliderBox curBox = objectInserterMap.get("00");
+                    curBox.setTopBox(objectInserterMap.get("0"+bottomRow)); // top
+                    curBox.setTopRightBox(objectInserterMap.get("1"+bottomRow)); //top right
+                    curBox.setRightBox(objectInserterMap.get("01")); //right
+                    curBox.setBotRightBox(objectInserterMap.get("11")); //bottom right
+                    curBox.setBotBox(objectInserterMap.get("01")); //bottom
+                    curBox.setBotLeftBox(objectInserterMap.get(rightColumn+"0")); //bottom left
+                    curBox.setLeftBox(objectInserterMap.get(rightColumn+"0")); // left
+                    curBox.setTopLeftBox(objectInserterMap.get(rightColumn+bottomRow)); //top left
+                }
+            }
+        }
+        objectInserterMap.forEach((s, colliderBox) -> {
+            if (Objects.equals(s, "00")) {
+                    colliderBox.setTopBox(objectInserterMap.get("0"+bottomRow));
+                    colliderBox.setTopRightBox(objectInserterMap.get("1"+bottomRow));
+                    colliderBox.setRightBox(objectInserterMap.get("01"));
+                    colliderBox.setBotRightBox(objectInserterMap.get("11"));
+                    colliderBox.setBotBox(objectInserterMap.get("01"));
+                    colliderBox.setBotLeftBox(objectInserterMap.get(rightColumn+"0"));
+                    colliderBox.setLeftBox(objectInserterMap.get(rightColumn+"0"));
+                    colliderBox.setTopLeftBox(objectInserterMap.get(rightColumn+bottomRow));
+                } else if (Objects.equals(s, rightColumn+bottomRow)) {
+                    colliderBox.setRightBox(objectInserterMap.get("0"+bottomRow));
+                    colliderBox.setBotBox(objectInserterMap.get(rightColumn+"0"));
+                    colliderBox.setBotLeftBox(objectInserterMap.get(rightColumn+bottomRow));
+            }
         });
 
     }
@@ -150,7 +189,7 @@ public class MasterBoX implements PingMasterBox {
     public static void main(String[] args) {
         String cut = "**************************************************************************************";
         System.out.println("        **Constructor Testing**");
-        MasterBoX testing = new MasterBoX(200,200);
+        MasterBoX testing = new MasterBoX(210,210);
         System.out.println("Constructor ran without issue");
         System.out.println(cut);
         System.out.println("        **Hashmap Testing**");
