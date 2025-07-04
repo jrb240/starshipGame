@@ -2,7 +2,6 @@ package com.example.starship;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 
 
 /***
@@ -25,12 +24,17 @@ import java.util.Objects;
 public class MasterBoX implements PingMasterBox {
     private ArrayList<ColliderBox> collisionAreas;
     private ArrayList<ColliderBox> betweenLayer;
-    private HashMap<String,ColliderBox> objectInserterMap;
+    private HashMap<String,ColliderBox> lowestLayerHashmap,betweenLayerHashmap;
+    private String TL = "TOP LEFT";
+    private String TR = "TOP RIGHT";
+    private String BL = "BOTTOM LEFT";
+    private String BR = "BOTTOM RIGHT";
     private double canvasWidth,canvasHeight;
     public MasterBoX(double canvasWidth,double canvasHeight){
         collisionAreas = new ArrayList<>();
         betweenLayer = new ArrayList<>();
-        objectInserterMap = new HashMap<>();
+        lowestLayerHashmap = new HashMap<>();
+        betweenLayerHashmap = new HashMap<>();
         this.canvasWidth = canvasWidth;
         this.canvasHeight = canvasHeight;
         //top left
@@ -43,22 +47,7 @@ public class MasterBoX implements PingMasterBox {
         betweenLayer.add(new ColliderBox(canvasWidth/2,canvasWidth,canvasHeight/2,canvasHeight));
         //make our bottom layer
         createGrid(betweenLayer,canvasWidth,canvasHeight);
-//        for (double xMark = 0; xMark < canvasWidth; xMark = xMark + 100){
-//            for (double yMark = 0; yMark < canvasHeight; yMark = yMark + 100){
-//                if (yMark < canvasHeight/2 && xMark < canvasWidth/2){ //top right
-//                    betweenLayer.getFirst().addChild(new ColliderBox(xMark,xMark+100,yMark,yMark+100));
-//                } else if (yMark >= canvasHeight/2 && xMark < canvasWidth/2) { //top left
-//                    betweenLayer.get(1).addChild(new ColliderBox(xMark,xMark+100,yMark,yMark+100));
-//                } else if (yMark < canvasHeight/2 && xMark >= canvasWidth/2) { //bottom right
-//                    betweenLayer.get(2).addChild(new ColliderBox(xMark,xMark+100,yMark,yMark+100));
-//                } else if (yMark >= canvasHeight/2 && xMark >= canvasWidth/2) { //bottom left
-//                    betweenLayer.getLast().addChild(new ColliderBox(xMark,xMark+100,yMark,yMark+100));
-//                } else {
-//                    System.out.println("Collision System found out of bounds object");
-//                }
-//            }
-//        }
-
+        interlockGridTiles();
     }
     private void createGrid(ArrayList<ColliderBox> grid,double canvasWidth, double canvasHeight){
         //fill by columns
@@ -68,7 +57,7 @@ public class MasterBoX implements PingMasterBox {
                 //TODO: this needs a guard
                 String boxLocationName = String.valueOf(Math.round(xMark/100)) +String.valueOf(Math.round(yMark/100));
 //                System.out.println(boxLocationName);
-                objectInserterMap.put(boxLocationName,currentBox);
+                lowestLayerHashmap.put(boxLocationName,currentBox);
                 if (yMark < canvasHeight/2 && xMark < canvasWidth/2){ //top right
                     grid.getFirst().addChild(currentBox);
                 } else if (yMark >= canvasHeight/2 && xMark < canvasWidth/2) { //top left
@@ -83,55 +72,131 @@ public class MasterBoX implements PingMasterBox {
             }
         }
     }
-    private void interlockGridTiles(ArrayList<ColliderBox> grid){
+    private void interlockGridTiles(){
+        if (lowestLayerHashmap.isEmpty()){
+            return;
+        }
         //first lay is for boxes, and then each has the full boxes
-        //TODO: take every box, and start connecting all their children together
         //In 2 steps. Connect the 4, and then connect all grid squares
         ArrayList<ArrayList<ColliderBox>> allCollisionBoxes = new ArrayList<>(); //should replace with hashmap
         String rightColumn = String.valueOf(Math.round(canvasWidth/100));
-        long farRightColNum = Math.round(canvasWidth/100);
+        long farRightColNum = Math.round(canvasWidth/100)-1;
         String bottomRow = String.valueOf(Math.round(canvasHeight/100));
-        long veryBotRow = Math.round(canvasHeight/100);
-        //TODO: complete this and remove old version
-        for (int x = 0; x < farRightColNum; x++) {
-            for (int y = 0; y < veryBotRow; y++) {
-                //Found this is actually going to be more effective
-                String boxLocationName = String.valueOf(x) +String.valueOf(y);
-                if (Objects.equals(boxLocationName, "00")) {
-                    ColliderBox curBox = objectInserterMap.get("00");
-                    curBox.setTopBox(objectInserterMap.get("0"+bottomRow)); // top
-                    curBox.setTopRightBox(objectInserterMap.get("1"+bottomRow)); //top right
-                    curBox.setRightBox(objectInserterMap.get("01")); //right
-                    curBox.setBotRightBox(objectInserterMap.get("11")); //bottom right
-                    curBox.setBotBox(objectInserterMap.get("01")); //bottom
-                    curBox.setBotLeftBox(objectInserterMap.get(rightColumn+"0")); //bottom left
-                    curBox.setLeftBox(objectInserterMap.get(rightColumn+"0")); // left
-                    curBox.setTopLeftBox(objectInserterMap.get(rightColumn+bottomRow)); //top left
+        long veryBotRow = Math.round(canvasHeight/100)-1;
+
+        String topLeft,topMid,topRight,midLeft,midRight,botLeft,botMid,botRight;
+
+        //Well could be better, but this will work
+        for (int x = 0; x < farRightColNum+1; x++) {
+            for (int y = 0; y < veryBotRow+1; y++) {
+                //TODO: rethink this someday XD
+                if (x == 0 && y == 0){ // top left corner
+                    topLeft = String.valueOf(farRightColNum) +String.valueOf(veryBotRow);
+                    topMid = String.valueOf(x) +String.valueOf(veryBotRow);
+                    topRight = String.valueOf(x+1) +String.valueOf(veryBotRow);
+                    midLeft = String.valueOf(farRightColNum) +String.valueOf(y);
+                    midRight = String.valueOf(x+1) +String.valueOf(y);
+                    botLeft = String.valueOf(farRightColNum) +String.valueOf(y+1);
+                    botMid = String.valueOf(x) +String.valueOf(y+1);
+                    botRight = String.valueOf(x+1) +String.valueOf(y+1);
+                } else if (x == 0 && y == veryBotRow) { // bottom left corner
+                    topLeft = String.valueOf(farRightColNum) +String.valueOf(y-1);
+                    topMid = String.valueOf(x) +String.valueOf(y-1);
+                    topRight = String.valueOf(x+1) +String.valueOf(y-1);
+                    midLeft = String.valueOf(farRightColNum) +String.valueOf(y);
+                    midRight = String.valueOf(x+1) +String.valueOf(y);
+                    botLeft = String.valueOf(farRightColNum) +String.valueOf(0);
+                    botMid = String.valueOf(x) +String.valueOf(0);
+                    botRight = String.valueOf(x+1) +String.valueOf(0);
+                } else if (x == farRightColNum && y == 0) { // top right corner
+                    topLeft = String.valueOf(x-1) +String.valueOf(veryBotRow);
+                    topMid = String.valueOf(x) +String.valueOf(veryBotRow);
+                    topRight = String.valueOf(0) +String.valueOf(veryBotRow);
+                    midLeft = String.valueOf(x-1) +String.valueOf(y);
+                    midRight = String.valueOf(0) +String.valueOf(y);
+                    botLeft = String.valueOf(x-1) +String.valueOf(y+1);
+                    botMid = String.valueOf(x) +String.valueOf(y+1);
+                    botRight = String.valueOf(0) +String.valueOf(y+1);
+                } else if (x == farRightColNum && y == veryBotRow) { // bottom right corner
+                    topLeft = String.valueOf(x-1) +String.valueOf(y-1);
+                    topMid = String.valueOf(x) +String.valueOf(y-1);
+                    topRight = String.valueOf(0) +String.valueOf(y-1);
+                    midLeft = String.valueOf(x-1) +String.valueOf(y);
+                    midRight = String.valueOf(0) +String.valueOf(y);
+                    botLeft = String.valueOf(x-1) +String.valueOf(0);
+                    botMid = String.valueOf(x) +String.valueOf(0);
+                    botRight = String.valueOf(0) +String.valueOf(0);
+                } else if (x == 0 && y != veryBotRow) { //left side
+                    topLeft = String.valueOf(farRightColNum) +String.valueOf(y-1);
+                    topMid = String.valueOf(x) +String.valueOf(y-1);
+                    topRight = String.valueOf(x+1) +String.valueOf(y-1);
+                    midLeft = String.valueOf(farRightColNum) +String.valueOf(y);
+                    midRight = String.valueOf(x+1) +String.valueOf(y);
+                    botLeft = String.valueOf(farRightColNum) +String.valueOf(y+1);
+                    botMid = String.valueOf(x) +String.valueOf(y+1);
+                    botRight = String.valueOf(x+1) +String.valueOf(y+1);
+                } else if (x == farRightColNum && y != veryBotRow) { //right side
+                    topLeft = String.valueOf(farRightColNum) +String.valueOf(y-1);
+                    topMid = String.valueOf(x) +String.valueOf(y-1);
+                    topRight = String.valueOf(0) +String.valueOf(y-1);
+                    midLeft = String.valueOf(farRightColNum) +String.valueOf(y);
+                    midRight = String.valueOf(0) +String.valueOf(y);
+                    botLeft = String.valueOf(farRightColNum) +String.valueOf(y+1);
+                    botMid = String.valueOf(x) +String.valueOf(y+1);
+                    botRight = String.valueOf(0) +String.valueOf(y+1);
+                } else if (x != farRightColNum && y == 0) { //top row
+                    topLeft = String.valueOf(farRightColNum) +String.valueOf(veryBotRow);
+                    topMid = String.valueOf(x) +String.valueOf(veryBotRow);
+                    topRight = String.valueOf(x+1) +String.valueOf(veryBotRow);
+                    midLeft = String.valueOf(farRightColNum) +String.valueOf(y);
+                    midRight = String.valueOf(x+1) +String.valueOf(y);
+                    botLeft = String.valueOf(farRightColNum) +String.valueOf(y+1);
+                    botMid = String.valueOf(x) +String.valueOf(y+1);
+                    botRight = String.valueOf(x+1) +String.valueOf(y+1);
+                } else if (x != farRightColNum && y == veryBotRow) { //bottom row
+                    topLeft = String.valueOf(farRightColNum) +String.valueOf(y-1);
+                    topMid = String.valueOf(x) +String.valueOf(y-1);
+                    topRight = String.valueOf(x+1) +String.valueOf(y-1);
+                    midLeft = String.valueOf(farRightColNum) +String.valueOf(y);
+                    midRight = String.valueOf(x+1) +String.valueOf(y);
+                    botLeft = String.valueOf(farRightColNum) +String.valueOf(0);
+                    botMid = String.valueOf(x) +String.valueOf(0);
+                    botRight = String.valueOf(x+1) +String.valueOf(0);
+                } else {
+                    topLeft = String.valueOf(x-1) +String.valueOf(y-1);
+                    topMid = String.valueOf(x) +String.valueOf(y-1);
+                    topRight = String.valueOf(x+1) +String.valueOf(y-1);
+                    midLeft = String.valueOf(x-1) +String.valueOf(y);
+                    midRight = String.valueOf(x+1) +String.valueOf(y);
+                    botLeft = String.valueOf(x-1) +String.valueOf(y+1);
+                    botMid = String.valueOf(x) +String.valueOf(y+1);
+                    botRight = String.valueOf(x+1) +String.valueOf(y+1);
                 }
+
+                String boxLocationName = String.valueOf(x) +String.valueOf(y);
+                ColliderBox curBox = lowestLayerHashmap.get(boxLocationName);
+
+                curBox.setTopLeftBox(lowestLayerHashmap.get(topLeft));   //top left
+                curBox.setTopBox(lowestLayerHashmap.get(topMid));        //top
+                curBox.setTopRightBox(lowestLayerHashmap.get(topRight)); //top right
+                curBox.setLeftBox(lowestLayerHashmap.get(midLeft));      //left
+                curBox.setRightBox(lowestLayerHashmap.get(midRight));    //right
+                curBox.setBotLeftBox(lowestLayerHashmap.get(botLeft));   //bottom left
+                curBox.setBotBox(lowestLayerHashmap.get(botMid));        //bottom
+                curBox.setBotRightBox(lowestLayerHashmap.get(botRight)); //bottom right
             }
         }
-        objectInserterMap.forEach((s, colliderBox) -> {
-            if (Objects.equals(s, "00")) {
-                    colliderBox.setTopBox(objectInserterMap.get("0"+bottomRow));
-                    colliderBox.setTopRightBox(objectInserterMap.get("1"+bottomRow));
-                    colliderBox.setRightBox(objectInserterMap.get("01"));
-                    colliderBox.setBotRightBox(objectInserterMap.get("11"));
-                    colliderBox.setBotBox(objectInserterMap.get("01"));
-                    colliderBox.setBotLeftBox(objectInserterMap.get(rightColumn+"0"));
-                    colliderBox.setLeftBox(objectInserterMap.get(rightColumn+"0"));
-                    colliderBox.setTopLeftBox(objectInserterMap.get(rightColumn+bottomRow));
-                } else if (Objects.equals(s, rightColumn+bottomRow)) {
-                    colliderBox.setRightBox(objectInserterMap.get("0"+bottomRow));
-                    colliderBox.setBotBox(objectInserterMap.get(rightColumn+"0"));
-                    colliderBox.setBotLeftBox(objectInserterMap.get(rightColumn+bottomRow));
-            }
-        });
-
     }
+
+    /**
+     * Start up complete
+     * Rest are functions calls to be done during operation
+     */
+
     public boolean isTheirConflict(){
         for (ColliderBox area: betweenLayer){
             if (area.isThereConflict()){
-                return true;
+                area.isThereConflict();
             }
         }
         return false;
@@ -141,6 +206,10 @@ public class MasterBoX implements PingMasterBox {
         betweenLayer.forEach(child->{
             child.update();
         });
+    }
+
+    public void addEnemyObject(EnemyObject nThing){
+        String position = gridLocationToHashmapKey(nThing.getPositionX(),nThing.getPositionY());
     }
 
     @Override
@@ -183,19 +252,55 @@ public class MasterBoX implements PingMasterBox {
 
     }
     public HashMap<String,ColliderBox> getMap(){
-        return objectInserterMap;
+        return lowestLayerHashmap;
+    }
+
+    private String gridLocationToHashmapKey(double x, double y){
+        return String.valueOf(Math.round(x/100)+String.valueOf(Math.round(y/100)));
+    }
+    private String twoNumsToHashmapKey(double x, double y){
+        return String.valueOf(x)+String.valueOf(y);
     }
 
     public static void main(String[] args) {
         String cut = "**************************************************************************************";
-        System.out.println("        **Constructor Testing**");
-        MasterBoX testing = new MasterBoX(210,210);
-        System.out.println("Constructor ran without issue");
+        System.out.println("            **Constructor Testing**");
+        MasterBoX testing = new MasterBoX(1600,800);
+        System.out.println("            **Constructor ran without issue**");
         System.out.println(cut);
-        System.out.println("        **Hashmap Testing**");
+        System.out.println("            **Hashmap Testing**");
         System.out.println(testing.getMap().size());
         testing.getMap().forEach((s, colliderBox) -> {
-            System.out.println(s);
+            if (colliderBox.getTopLeftBox() == null) {
+                System.out.println(s + ": Failed to get TLB");
+            }
+            if (colliderBox.getTopBox() == null) {
+                System.out.println(s + ": Failed to get TMB");
+            }
+            if (colliderBox.getTopRightBox() == null) {
+                System.out.println(s + ": Failed to get TRB");
+            }
+            if (colliderBox.getLeftBox() == null) {
+                System.out.println(s + ": Failed to get LB");
+            }
+            if (colliderBox.getRightBox() == null) {
+                System.out.println(s + ": Failed to get RB");
+            }
+            if (colliderBox.getBotLeftBox() == null) {
+                System.out.println(s + ": Failed to get BLB");
+            }
+            if (colliderBox.getBotBox() == null) {
+                System.out.println(s + ": Failed to get BMB");
+            }
+            if (colliderBox.getBotRightBox() == null) {
+                System.out.println(s + ": Failed to get BRB");
+            }
         });
+        System.out.println("            **Hashmap Testing Complete**");
+        System.out.println(cut);
+        System.out.println("            **Object Placement Testing**");
+
+        System.out.println("            **Object Placement Testing Complete**");
+        System.out.println(cut);
     }
 }

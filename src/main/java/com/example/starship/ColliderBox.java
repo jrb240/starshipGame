@@ -48,38 +48,6 @@ public class ColliderBox {
         children.add(addChild);
     }
 
-    public void setBotBox(ColliderBox botBox) {
-        this.botBox = botBox;
-    }
-
-    public void setBotLeftBox(ColliderBox botLeftBox) {
-        this.botLeftBox = botLeftBox;
-    }
-
-    public void setBotRightBox(ColliderBox botRightBox) {
-        this.botRightBox = botRightBox;
-    }
-
-    public void setLeftBox(ColliderBox leftBox) {
-        this.leftBox = leftBox;
-    }
-
-    public void setRightBox(ColliderBox rightBox) {
-        this.rightBox = rightBox;
-    }
-
-    public void setTopRightBox(ColliderBox topRightBox) {
-        this.topRightBox = topRightBox;
-    }
-
-    public void setTopBox(ColliderBox topBox) {
-        this.topBox = topBox;
-    }
-
-    public void setTopLeftBox(ColliderBox topLeftBox) {
-        this.topLeftBox = topLeftBox;
-    }
-
     public void update() {
         //collider boxes should probably handle moving as there are a
         //few things that need to happen after things have moved
@@ -103,5 +71,69 @@ public class ColliderBox {
 
     public ArrayList<ColliderBox> getChildren() {
         return children;
+    }
+
+    public void setBotBox(ColliderBox botBox) {
+        this.botBox = botBox;
+    }
+
+    public ColliderBox getBotBox() {
+        return botBox;
+    }
+
+    public void setBotLeftBox(ColliderBox botLeftBox) {
+        this.botLeftBox = botLeftBox;
+    }
+
+    public ColliderBox getBotLeftBox() {
+        return botLeftBox;
+    }
+
+    public void setBotRightBox(ColliderBox botRightBox) {
+        this.botRightBox = botRightBox;
+    }
+
+    public ColliderBox getBotRightBox() {
+        return botRightBox;
+    }
+
+    public void setLeftBox(ColliderBox leftBox) {
+        this.leftBox = leftBox;
+    }
+
+    public ColliderBox getLeftBox() {
+        return leftBox;
+    }
+
+    public void setRightBox(ColliderBox rightBox) {
+        this.rightBox = rightBox;
+    }
+
+    public ColliderBox getRightBox() {
+        return rightBox;
+    }
+
+    public void setTopRightBox(ColliderBox topRightBox) {
+        this.topRightBox = topRightBox;
+    }
+
+    public ColliderBox getTopRightBox() {
+        return topRightBox;
+    }
+
+    public void setTopBox(ColliderBox topBox) {
+        this.topBox = topBox;
+    }
+
+    public ColliderBox getTopBox() {
+        return topBox;
+    }
+
+    public void setTopLeftBox(ColliderBox topLeftBox) {
+        this.topLeftBox = topLeftBox;
+    }
+
+    public ColliderBox getTopLeftBox() {
+        return topLeftBox;
     }
 }
