@@ -89,89 +89,25 @@ public class MasterBoX implements PingMasterBox {
         //Well could be better, but this will work
         for (int x = 0; x < farRightColNum+1; x++) {
             for (int y = 0; y < veryBotRow+1; y++) {
-                //TODO: rethink this someday XD
-                if (x == 0 && y == 0){ // top left corner
-                    topLeft = String.valueOf(farRightColNum) +String.valueOf(veryBotRow);
-                    topMid = String.valueOf(x) +String.valueOf(veryBotRow);
-                    topRight = String.valueOf(x+1) +String.valueOf(veryBotRow);
-                    midLeft = String.valueOf(farRightColNum) +String.valueOf(y);
-                    midRight = String.valueOf(x+1) +String.valueOf(y);
-                    botLeft = String.valueOf(farRightColNum) +String.valueOf(y+1);
-                    botMid = String.valueOf(x) +String.valueOf(y+1);
-                    botRight = String.valueOf(x+1) +String.valueOf(y+1);
-                } else if (x == 0 && y == veryBotRow) { // bottom left corner
-                    topLeft = String.valueOf(farRightColNum) +String.valueOf(y-1);
-                    topMid = String.valueOf(x) +String.valueOf(y-1);
-                    topRight = String.valueOf(x+1) +String.valueOf(y-1);
-                    midLeft = String.valueOf(farRightColNum) +String.valueOf(y);
-                    midRight = String.valueOf(x+1) +String.valueOf(y);
-                    botLeft = String.valueOf(farRightColNum) +String.valueOf(0);
-                    botMid = String.valueOf(x) +String.valueOf(0);
-                    botRight = String.valueOf(x+1) +String.valueOf(0);
-                } else if (x == farRightColNum && y == 0) { // top right corner
-                    topLeft = String.valueOf(x-1) +String.valueOf(veryBotRow);
-                    topMid = String.valueOf(x) +String.valueOf(veryBotRow);
-                    topRight = String.valueOf(0) +String.valueOf(veryBotRow);
-                    midLeft = String.valueOf(x-1) +String.valueOf(y);
-                    midRight = String.valueOf(0) +String.valueOf(y);
-                    botLeft = String.valueOf(x-1) +String.valueOf(y+1);
-                    botMid = String.valueOf(x) +String.valueOf(y+1);
-                    botRight = String.valueOf(0) +String.valueOf(y+1);
-                } else if (x == farRightColNum && y == veryBotRow) { // bottom right corner
-                    topLeft = String.valueOf(x-1) +String.valueOf(y-1);
-                    topMid = String.valueOf(x) +String.valueOf(y-1);
-                    topRight = String.valueOf(0) +String.valueOf(y-1);
-                    midLeft = String.valueOf(x-1) +String.valueOf(y);
-                    midRight = String.valueOf(0) +String.valueOf(y);
-                    botLeft = String.valueOf(x-1) +String.valueOf(0);
-                    botMid = String.valueOf(x) +String.valueOf(0);
-                    botRight = String.valueOf(0) +String.valueOf(0);
-                } else if (x == 0 && y != veryBotRow) { //left side
-                    topLeft = String.valueOf(farRightColNum) +String.valueOf(y-1);
-                    topMid = String.valueOf(x) +String.valueOf(y-1);
-                    topRight = String.valueOf(x+1) +String.valueOf(y-1);
-                    midLeft = String.valueOf(farRightColNum) +String.valueOf(y);
-                    midRight = String.valueOf(x+1) +String.valueOf(y);
-                    botLeft = String.valueOf(farRightColNum) +String.valueOf(y+1);
-                    botMid = String.valueOf(x) +String.valueOf(y+1);
-                    botRight = String.valueOf(x+1) +String.valueOf(y+1);
-                } else if (x == farRightColNum && y != veryBotRow) { //right side
-                    topLeft = String.valueOf(farRightColNum) +String.valueOf(y-1);
-                    topMid = String.valueOf(x) +String.valueOf(y-1);
-                    topRight = String.valueOf(0) +String.valueOf(y-1);
-                    midLeft = String.valueOf(farRightColNum) +String.valueOf(y);
-                    midRight = String.valueOf(0) +String.valueOf(y);
-                    botLeft = String.valueOf(farRightColNum) +String.valueOf(y+1);
-                    botMid = String.valueOf(x) +String.valueOf(y+1);
-                    botRight = String.valueOf(0) +String.valueOf(y+1);
-                } else if (x != farRightColNum && y == 0) { //top row
-                    topLeft = String.valueOf(farRightColNum) +String.valueOf(veryBotRow);
-                    topMid = String.valueOf(x) +String.valueOf(veryBotRow);
-                    topRight = String.valueOf(x+1) +String.valueOf(veryBotRow);
-                    midLeft = String.valueOf(farRightColNum) +String.valueOf(y);
-                    midRight = String.valueOf(x+1) +String.valueOf(y);
-                    botLeft = String.valueOf(farRightColNum) +String.valueOf(y+1);
-                    botMid = String.valueOf(x) +String.valueOf(y+1);
-                    botRight = String.valueOf(x+1) +String.valueOf(y+1);
-                } else if (x != farRightColNum && y == veryBotRow) { //bottom row
-                    topLeft = String.valueOf(farRightColNum) +String.valueOf(y-1);
-                    topMid = String.valueOf(x) +String.valueOf(y-1);
-                    topRight = String.valueOf(x+1) +String.valueOf(y-1);
-                    midLeft = String.valueOf(farRightColNum) +String.valueOf(y);
-                    midRight = String.valueOf(x+1) +String.valueOf(y);
-                    botLeft = String.valueOf(farRightColNum) +String.valueOf(0);
-                    botMid = String.valueOf(x) +String.valueOf(0);
-                    botRight = String.valueOf(x+1) +String.valueOf(0);
-                } else {
-                    topLeft = String.valueOf(x-1) +String.valueOf(y-1);
-                    topMid = String.valueOf(x) +String.valueOf(y-1);
-                    topRight = String.valueOf(x+1) +String.valueOf(y-1);
-                    midLeft = String.valueOf(x-1) +String.valueOf(y);
-                    midRight = String.valueOf(x+1) +String.valueOf(y);
-                    botLeft = String.valueOf(x-1) +String.valueOf(y+1);
-                    botMid = String.valueOf(x) +String.valueOf(y+1);
-                    botRight = String.valueOf(x+1) +String.valueOf(y+1);
-                }
+                long xShiftRight = x + 1;
+                long yShiftUp = y - 1;
+                long xShiftLeft = x - 1;
+                long yShiftDown = y + 1;
+
+                //handle rollover
+                if (x+1 > farRightColNum) { xShiftRight = 0;}
+                if (x-1 < 0) { xShiftLeft = farRightColNum;}
+                if (y - 1 < 0) { yShiftUp = veryBotRow;}
+                if (y + 1 > veryBotRow) { yShiftDown = 0;}
+
+                topLeft = String.valueOf(xShiftLeft) +String.valueOf(yShiftUp);
+                topMid = String.valueOf(x) +String.valueOf(yShiftUp);
+                topRight = String.valueOf(xShiftRight) +String.valueOf(yShiftUp);
+                midLeft = String.valueOf(xShiftLeft) +String.valueOf(y);
+                midRight = String.valueOf(xShiftRight) +String.valueOf(y);
+                botLeft = String.valueOf(xShiftLeft) +String.valueOf(yShiftDown);
+                botMid = String.valueOf(x) +String.valueOf(yShiftDown);
+                botRight = String.valueOf(xShiftRight) +String.valueOf(yShiftDown);
 
                 String boxLocationName = String.valueOf(x) +String.valueOf(y);
                 ColliderBox curBox = lowestLayerHashmap.get(boxLocationName);
