@@ -1,18 +1,25 @@
 package com.example.starship;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 
 
 public class ColliderBox {
-    private ArrayList<DemoAsteroid> asteroidSet;
-    private ArrayList<EnergyBullet> bullets;
+    private LinkedList<DemoAsteroid> asteroidSet;
+    private LinkedList<DemoAsteroid> controlledAsteroidset;
+    private LinkedList<EnergyBullet> bullets;
+    private LinkedList<EnergyBullet> controlledBullets;
     private double leftX,rightX,topY,bottomY;
-    private ColliderBox rightBox,leftBox,topBox,botBox,topRightBox,topLeftBox,botRightBox,botLeftBox;
+    private ColliderBox rightBox,leftBox,topBox,botBox,topRightBox,topLeftBox,botRightBox,botLeftBox,parent;
     private ArrayList<ColliderBox> children;
+    private HashMap<String,ColliderBox> childrenMap;
 
     public ColliderBox(double leftX,double rightX,double topY, double bottomY) {
-        asteroidSet = new ArrayList<>();
-        bullets = new ArrayList<>();
+        asteroidSet = new LinkedList<>();
+        controlledAsteroidset = new LinkedList<>();
+        bullets = new LinkedList<>();
+        controlledBullets = new LinkedList<>();
         children = new ArrayList<>();
 
         this.leftX = leftX;
@@ -36,8 +43,8 @@ public class ColliderBox {
         }
     }
 
-    public void addAsteroid(DemoAsteroid asteroid) {
-        asteroidSet.add(asteroid);
+    public void addControlledAsteroid(DemoAsteroid asteroid) {
+        controlledAsteroidset.add(asteroid);
     }
 
     public void addEnergyBullet(EnergyBullet bullet) {
@@ -45,7 +52,12 @@ public class ColliderBox {
     }
 
     public void addChild(ColliderBox addChild){
+        if (childrenMap == null) {
+            childrenMap = new HashMap<>();
+        }
         children.add(addChild);
+        childrenMap.put(addChild.getName(),addChild);
+        addChild.setParent(this);
     }
 
     public void update() {
@@ -60,7 +72,7 @@ public class ColliderBox {
     }
     public void insertAsteroidIntoCollider(DemoAsteroid newAsteroid){
         if (children.isEmpty()) {
-            addAsteroid(newAsteroid);
+            addControlledAsteroid(newAsteroid);
         } else {
             //TODO: complete this. This is placing the asteroids into the smaller boxes
             double placeX = newAsteroid.getPositionX();
@@ -135,5 +147,13 @@ public class ColliderBox {
 
     public ColliderBox getTopLeftBox() {
         return topLeftBox;
+    }
+
+    public String getName(){
+        return String.valueOf(Math.round(leftX/100))+String.valueOf(Math.round(topY/100));
+    }
+
+    public void setParent(ColliderBox parent){
+        this.parent = parent;
     }
 }
