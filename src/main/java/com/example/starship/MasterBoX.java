@@ -146,6 +146,11 @@ public class MasterBoX implements PingMasterBox {
 
     public void addEnemyObject(EnemyObject nThing){
         String position = gridLocationToHashmapKey(nThing.getPositionX(),nThing.getPositionY());
+//        lowestLayerHashmap.get(position).addControlledAsteroid(nThing);
+    }
+    public void addAsteroid(DemoAsteroid asteroid){
+        String position = gridLocationToHashmapKey(asteroid.getPositionX(),asteroid.getPositionY());
+        lowestLayerHashmap.get(position).addControlledAsteroid(asteroid);
     }
 
     @Override

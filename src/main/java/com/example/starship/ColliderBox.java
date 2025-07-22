@@ -78,6 +78,7 @@ public class ColliderBox {
             double placeX = newAsteroid.getPositionX();
             double placeY = newAsteroid.getPositionY();
             double size = newAsteroid.getRadius();
+            controlledAsteroidset.add(newAsteroid);
         }
     }
 
