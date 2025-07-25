@@ -10,7 +10,7 @@ public class ColliderBox {
     private LinkedList<DemoAsteroid> controlledAsteroidset;
     private LinkedList<EnergyBullet> bullets;
     private LinkedList<EnergyBullet> controlledBullets;
-    private double leftX,rightX,topY,bottomY;
+    public double leftX,rightX,topY,bottomY;
     private ColliderBox rightBox,leftBox,topBox,botBox,topRightBox,topLeftBox,botRightBox,botLeftBox,parent;
     private ArrayList<ColliderBox> children;
     private HashMap<String,ColliderBox> childrenMap;
@@ -79,7 +79,36 @@ public class ColliderBox {
             double placeY = newAsteroid.getPositionY();
             double size = newAsteroid.getRadius();
             controlledAsteroidset.add(newAsteroid);
+            if (placeX+size > rightX){
+                getRightBox().addAsteroid(newAsteroid);
+            }
+            if (placeX-size < leftX){
+                getLeftBox().addAsteroid(newAsteroid);
+            }
+            if (placeY+size > topY){
+                getTopBox().addAsteroid(newAsteroid);
+            }
+            if (placeX-size < bottomY){
+                getRightBox().addAsteroid(newAsteroid);
+            }
+            if (pythagoras(topY,rightX,placeX,placeY)< size){
+                getTopRightBox().addAsteroid(newAsteroid);
+            }
+            if (pythagoras(topY,leftX,placeX,placeY)< size){
+                getTopLeftBox().addAsteroid(newAsteroid);
+            }
+            if (pythagoras(bottomY,rightX,placeX,placeY)< size){
+                getBotRightBox().addAsteroid(newAsteroid);
+            }
+            if (pythagoras(bottomY,leftX,placeX,placeY)< size){
+                getBotLeftBox().addAsteroid(newAsteroid);
+            }
+
         }
+    }
+
+    public void addAsteroid(DemoAsteroid asteroid){
+        asteroidSet.add(asteroid);
     }
 
     public ArrayList<ColliderBox> getChildren() {
@@ -156,5 +185,8 @@ public class ColliderBox {
 
     public void setParent(ColliderBox parent){
         this.parent = parent;
+    }
+    public double pythagoras(double bX, double bY, double aX, double aY){
+        return Math.sqrt((bX-aX)*(bX-aX)+(bY-aY)*(bY-aY));
     }
 }
