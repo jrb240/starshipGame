@@ -47,6 +47,10 @@ public class ColliderBox {
         controlledAsteroidset.add(asteroid);
     }
 
+    public void addEnemyObject(EnemyObject enemy){
+        //TODO:complete this
+    }
+
     public void addEnergyBullet(EnergyBullet bullet) {
         bullets.add(bullet);
     }

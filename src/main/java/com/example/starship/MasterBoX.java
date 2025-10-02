@@ -132,7 +132,8 @@ public class MasterBoX implements PingMasterBox {
     public boolean isTheirConflict(){
         for (ColliderBox area: betweenLayer){
             if (area.isThereConflict()){
-                area.isThereConflict();
+//                return area.isThereConflict();
+                return true;
             }
         }
         return false;
@@ -146,7 +147,11 @@ public class MasterBoX implements PingMasterBox {
 
     public void addEnemyObject(EnemyObject nThing){
         String position = gridLocationToHashmapKey(nThing.getPositionX(),nThing.getPositionY());
-//        lowestLayerHashmap.get(position).addControlledAsteroid(nThing);
+        lowestLayerHashmap.get(position).addEnemyObject(nThing);
+    }
+    public void addBullet(EnergyBullet bullet){
+        String position = gridLocationToHashmapKey(bullet.getPositionX(),bullet.getPositionY());
+        lowestLayerHashmap.get(position).addEnergyBullet(bullet);
     }
     public void addAsteroid(DemoAsteroid asteroid){
         String position = gridLocationToHashmapKey(asteroid.getPositionX(),asteroid.getPositionY());
@@ -206,7 +211,9 @@ public class MasterBoX implements PingMasterBox {
     public static void main(String[] args) {
         String cut = "**************************************************************************************";
         System.out.println("            **Constructor Testing**");
-        MasterBoX testing = new MasterBoX(1600,800);
+        double canWidth = 1600;
+        double canHeight = 800;
+        MasterBoX testing = new MasterBoX(canWidth,canHeight);
         System.out.println("            **Constructor ran without issue**");
         System.out.println(cut);
         System.out.println("            **Hashmap Testing**");
@@ -240,7 +247,19 @@ public class MasterBoX implements PingMasterBox {
         System.out.println("            **Hashmap Testing Complete**");
         System.out.println(cut);
         System.out.println("            **Object Placement Testing**");
-
+        DemoAsteroid one = new DemoAsteroid(0.1,0.1,canWidth,canHeight);
+        if (testing.isTheirConflict()){
+            System.out.println("There should not be any conflict currently.");
+        };
+        testing.addAsteroid(one);
+        if (testing.isTheirConflict()){
+            System.out.println("There should not be any conflict currently.");
+        };
+        EnergyBullet b1 = new EnergyBullet(20,20,1,1,0.2,false);
+        testing.addBullet(b1);
+        if (!testing.isTheirConflict()){
+            System.out.println("Issues in conflict detection.");
+        };
         System.out.println("            **Object Placement Testing Complete**");
         System.out.println(cut);
     }
