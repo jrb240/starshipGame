@@ -2,6 +2,7 @@ package com.example.starship;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 
 /***
@@ -24,7 +25,9 @@ import java.util.HashMap;
 public class MasterBoX implements PingMasterBox {
     private ArrayList<ColliderBox> collisionAreas;
     private ArrayList<ColliderBox> betweenLayer;
+    private LinkedList<ColliderBox> collisionBoxes;
     private HashMap<String,ColliderBox> lowestLayerHashmap,betweenLayerHashmap;
+    private ColliderBox topLeft,topRight,bottomLeft,bottomRight;
     private String TL = "TOP LEFT";
     private String TR = "TOP RIGHT";
     private String BL = "BOTTOM LEFT";
@@ -32,19 +35,21 @@ public class MasterBoX implements PingMasterBox {
     private double canvasWidth,canvasHeight;
     public MasterBoX(double canvasWidth,double canvasHeight){
         collisionAreas = new ArrayList<>();
+        collisionBoxes = new LinkedList<>();
         betweenLayer = new ArrayList<>();
         lowestLayerHashmap = new HashMap<>();
         betweenLayerHashmap = new HashMap<>();
+        topLeft = new ColliderBox(0,canvasWidth/2,0,canvasHeight/2);
+        topRight = new ColliderBox(canvasWidth/2,canvasWidth,0,canvasHeight/2);
+        bottomLeft = new ColliderBox(0,canvasWidth/2,canvasHeight/2,canvasHeight);
+        bottomRight = new ColliderBox(canvasWidth/2,canvasWidth,canvasHeight/2,canvasHeight);
         this.canvasWidth = canvasWidth;
         this.canvasHeight = canvasHeight;
-        //top left
-        betweenLayer.add(new ColliderBox(0,canvasWidth/2,0,canvasHeight/2));
-        //top right
-        betweenLayer.add(new ColliderBox(canvasWidth/2,canvasWidth,0,canvasHeight/2));
-        //bottom left
-        betweenLayer.add(new ColliderBox(0,canvasWidth/2,canvasHeight/2,canvasHeight));
-        //bottom right
-        betweenLayer.add(new ColliderBox(canvasWidth/2,canvasWidth,canvasHeight/2,canvasHeight));
+
+        betweenLayer.add(topLeft);
+        betweenLayer.add(topRight);
+        betweenLayer.add(bottomLeft);
+        betweenLayer.add(bottomRight);
         //make our bottom layer
         createGrid(betweenLayer,canvasWidth,canvasHeight);
         interlockGridTiles();
@@ -57,20 +62,29 @@ public class MasterBoX implements PingMasterBox {
                 //TODO: this needs a guard
                 String boxLocationName = String.valueOf(Math.round(xMark/100)) +String.valueOf(Math.round(yMark/100));
 //                System.out.println(boxLocationName);
+                currentBox.setMasterBoX(this);
                 lowestLayerHashmap.put(boxLocationName,currentBox);
                 if (yMark < canvasHeight/2 && xMark < canvasWidth/2){ //top right
                     grid.getFirst().addChild(currentBox);
+                    currentBox.setParent(topRight);
                 } else if (yMark >= canvasHeight/2 && xMark < canvasWidth/2) { //top left
                     grid.get(1).addChild(currentBox);
+                    currentBox.setParent(topLeft);
                 } else if (yMark < canvasHeight/2 && xMark >= canvasWidth/2) { //bottom right
                     grid.get(2).addChild(currentBox);
+                    currentBox.setParent(bottomRight);
                 } else if (yMark >= canvasHeight/2 && xMark >= canvasWidth/2) { //bottom left
                     grid.getLast().addChild(currentBox);
+                    currentBox.setParent(bottomLeft);
                 } else {
                     System.out.println("Collision System found out of bounds object");
                 }
             }
         }
+    }
+    private void setBetweenLayerParent(){
+        betweenLayer.forEach(child->
+                child.setMasterBoX(this));
     }
     private void interlockGridTiles(){
         if (lowestLayerHashmap.isEmpty()){
@@ -145,12 +159,16 @@ public class MasterBoX implements PingMasterBox {
     }
 
     public void addEnemyObject(EnemyObject nThing){
-        String position = gridLocationToHashmapKey(nThing.getPositionX(),nThing.getPositionY());
-//        lowestLayerHashmap.get(position).addControlledAsteroid(nThing);
+        String position = gridLocationToHashmapKey(nThing.getABSPosX(),nThing.getABSPosY());
+//        System.out.println(position);
+        lowestLayerHashmap.get(position).addControlledProjectileObject(nThing);
+//        collisionBoxes.add(lowestLayerHashmap.get(position));
     }
     public void addAsteroid(DemoAsteroid asteroid){
-        String position = gridLocationToHashmapKey(asteroid.getPositionX(),asteroid.getPositionY());
+        String position = gridLocationToHashmapKey(asteroid.getABSPosX(),asteroid.getABSPosY());
+//        System.out.println(position);
         lowestLayerHashmap.get(position).addControlledAsteroid(asteroid);
+        collisionBoxes.add(lowestLayerHashmap.get(position));
     }
 
     @Override
@@ -197,7 +215,19 @@ public class MasterBoX implements PingMasterBox {
     }
 
     private String gridLocationToHashmapKey(double x, double y){
-        return String.valueOf(Math.round(x/100)+String.valueOf(Math.round(y/100)));
+        if (Math.round(x/100) == canvasWidth/100&&Math.round(y/100)==canvasHeight/100){
+            System.out.println("AAH");
+            return String.valueOf(Math.round(x/100)-1+String.valueOf(Math.round(y/100)-1));
+        } else if (Math.round(x/100) == canvasWidth/100) {
+            System.out.println("Blah");
+            return String.valueOf(Math.round(x/100)-1+String.valueOf((int)Math.floor(y/100)));
+        } else if (Math.round(y/100)==canvasHeight/100) {
+            System.out.println("Curses");
+            return String.valueOf( (int)Math.floor(x/100)+String.valueOf(Math.round(y/100)-1));
+        } else {
+            System.out.println("Derp");
+            return String.valueOf((int) Math.floor(x/100)+String.valueOf((int)Math.floor(y/100)));
+        }
     }
     private String twoNumsToHashmapKey(double x, double y){
         return String.valueOf(x)+String.valueOf(y);
@@ -205,8 +235,10 @@ public class MasterBoX implements PingMasterBox {
 
     public static void main(String[] args) {
         String cut = "**************************************************************************************";
+        double testingWidth = 1600;
+        double testingHeight = 800;
         System.out.println("            **Constructor Testing**");
-        MasterBoX testing = new MasterBoX(1600,800);
+        MasterBoX testing = new MasterBoX(testingWidth,testingHeight);
         System.out.println("            **Constructor ran without issue**");
         System.out.println(cut);
         System.out.println("            **Hashmap Testing**");
@@ -240,7 +272,10 @@ public class MasterBoX implements PingMasterBox {
         System.out.println("            **Hashmap Testing Complete**");
         System.out.println(cut);
         System.out.println("            **Object Placement Testing**");
-
+        System.out.println(testing.getMap().keySet());
+        for (int i =0; i < 30; i++){
+            testing.addAsteroid(new DemoAsteroid(Math.random(),Math.random(), testingWidth, testingHeight));
+        }
         System.out.println("            **Object Placement Testing Complete**");
         System.out.println(cut);
     }

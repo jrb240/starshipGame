@@ -8,17 +8,22 @@ import java.util.LinkedList;
 public class ColliderBox {
     private LinkedList<DemoAsteroid> asteroidSet;
     private LinkedList<DemoAsteroid> controlledAsteroidset;
+    private LinkedList<EnemyObject> projectiles;
+    //TODO:remove these
     private LinkedList<EnergyBullet> bullets;
     private LinkedList<EnergyBullet> controlledBullets;
+    //
     private double leftX,rightX,topY,bottomY;
     private ColliderBox rightBox,leftBox,topBox,botBox,topRightBox,topLeftBox,botRightBox,botLeftBox,parent;
     private ArrayList<ColliderBox> children;
     private HashMap<String,ColliderBox> childrenMap;
+    private MasterBoX masterBox;
 
     public ColliderBox(double leftX,double rightX,double topY, double bottomY) {
         asteroidSet = new LinkedList<>();
         controlledAsteroidset = new LinkedList<>();
         bullets = new LinkedList<>();
+        projectiles = new LinkedList<>();
         controlledBullets = new LinkedList<>();
         children = new ArrayList<>();
 
@@ -42,9 +47,11 @@ public class ColliderBox {
             return !(asteroidSet.isEmpty() && bullets.isEmpty());
         }
     }
-
+    //TODO:add asteroids to other boxes
     public void addControlledAsteroid(DemoAsteroid asteroid) {
         controlledAsteroidset.add(asteroid);
+//        System.out.println(asteroid.getRadius());
+        System.out.println("x:"+leftX+", Y:"+topY + " Asteroid located at: x:"+asteroid.getABSPosX()+" Y:"+asteroid.getABSPosY());
     }
 
     public void addEnergyBullet(EnergyBullet bullet) {
@@ -70,6 +77,7 @@ public class ColliderBox {
             bullets.forEach(EnergyBullet::move);
         }
     }
+    //Why are you here. Past me you aren't helping me.
     public void insertAsteroidIntoCollider(DemoAsteroid newAsteroid){
         if (children.isEmpty()) {
             addControlledAsteroid(newAsteroid);
@@ -81,6 +89,7 @@ public class ColliderBox {
             controlledAsteroidset.add(newAsteroid);
         }
     }
+    public void setMasterBoX(MasterBoX master){this.masterBox = master;}
 
     public ArrayList<ColliderBox> getChildren() {
         return children;
@@ -156,5 +165,9 @@ public class ColliderBox {
 
     public void setParent(ColliderBox parent){
         this.parent = parent;
+    }
+
+    public void addControlledProjectileObject(EnemyObject nThing) {
+        this.projectiles.add(nThing);
     }
 }

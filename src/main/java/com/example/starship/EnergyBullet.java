@@ -1,7 +1,7 @@
 package com.example.starship;
 
 //TODO: bullets are currently absolute and not relative.
-public class EnergyBullet {
+public class EnergyBullet implements EnemyObject {
     double positionX,positionY;
     private double dX,dY,bulletAngle;
     double bulletSpeed;
@@ -41,6 +41,22 @@ public class EnergyBullet {
     public double getPositionY() {
         return this.positionY;
     }
+
+    @Override
+    public double getABSPosX() {
+        return positionX;
+    }
+
+    @Override
+    public double getABSPosY() {
+        return positionY;
+    }
+
+    @Override
+    public boolean isThisAHit(double x, double Y) {
+        return false;
+    }
+
     public Boolean isTimedOut(){
         return life < 0;
     }

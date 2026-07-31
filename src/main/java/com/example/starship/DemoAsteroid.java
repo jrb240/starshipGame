@@ -139,6 +139,16 @@ public class DemoAsteroid implements EnemyObject {
     }
 
     @Override
+    public double getABSPosX() {
+        return this.positionX*canvasWidth;
+    }
+
+    @Override
+    public double getABSPosY() {
+        return this.positionY*canvasHeight;
+    }
+
+    @Override
     public boolean isThisAHit(double x, double y) {
         double rad = 0;
         switch (this.asteroidSize){

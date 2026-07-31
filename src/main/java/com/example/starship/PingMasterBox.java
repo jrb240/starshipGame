@@ -1,6 +1,6 @@
 package com.example.starship;
 
-public interface PingMasterBox {
+public interface PingMasterBox  {
     //TODO: think of compression method for this
     //bullet movement
     public void passBulletLeft(EnergyBullet bullet);

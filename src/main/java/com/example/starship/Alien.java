@@ -22,9 +22,12 @@ public class Alien implements EnemyObject {
     private boolean shoot;
     private int shootChance;
     private double spawnTimer;
+    private double canvasHeight, canvasWidth;
 
     //be created
-    public Alien(){
+    public Alien(double CW,double CH){
+        canvasWidth = CW;
+        canvasHeight = CH;
         y = Math.random();
         if (Math.random()> 0.5){
             x = farEdge;
@@ -96,6 +99,16 @@ public class Alien implements EnemyObject {
     @Override
     public double getPositionY() {
         return y;
+    }
+
+    @Override
+    public double getABSPosX() {
+        return canvasWidth*x;
+    }
+
+    @Override
+    public double getABSPosY() {
+        return canvasHeight*y;
     }
 
     @Override
