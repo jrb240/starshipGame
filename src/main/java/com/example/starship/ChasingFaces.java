@@ -27,6 +27,16 @@ public class ChasingFaces implements EnemyObject {
     }
 
     @Override
+    public double getABSPosX() {
+        return 0;
+    }
+
+    @Override
+    public double getABSPosY() {
+        return 0;
+    }
+
+    @Override
     public boolean isThisAHit(double x, double Y) {
         return false;
     }

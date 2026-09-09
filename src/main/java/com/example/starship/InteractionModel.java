@@ -8,7 +8,7 @@ public class InteractionModel {
     private ArrayList<EnergyBullet> bullets;
     private ArrayList<Subscriber> subscribers;
     private double canvasWidth,canvasHeight;
-    private double bulletSpawn = 23;
+    private final double bulletSpawn = 23;
     private int level,cooldown;
     private long score;
     private Alien alien;
@@ -26,7 +26,7 @@ public class InteractionModel {
         level = 0;
         cooldown = 200;
         score = 0;
-        alien = new Alien();
+        alien = new Alien(canvasWidth,canvasHeight);
         gameState = GAMESTATE.STANDBY;
     }
     public void start(){
